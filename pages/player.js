@@ -3,7 +3,7 @@ import Head from "next/head";
 import Nav from "../components/nav";
 import io from "socket.io-client";
 
-const Player = () => (
+const Player = ({ gameId, playerCount, started, pieces }) => (
   <div>
     <Head>
       <title>Home</title>
@@ -14,18 +14,52 @@ const Player = () => (
 
     <div>
       player board
+      <br />
+      Game ID: {gameId}
+      <br />
+      Player Count:{playerCount}
+      <br />
+      {started ? "Started!" : "Waiting for other players..."}
+      <br />
+      Pieces: {pieces.join(", ")}
     </div>
   </div>
 );
 
 class PlayerPage extends React.Component {
   // connect to WS server and listen event
+
+  state = { gameId: null, started: false, playerCount: 0, pieces: [] };
+
   componentDidMount() {
     this.socket = io();
     this.socket.on("message", this.handleMessage);
     this.socket.on("connect", () => {
-        this.socket.emit("send-piece", { piece: "piece" })
-    })
+      // this.socket.emit("send-piece", { piece: "piece" });
+
+      const gameId = window.prompt("Game ID", "XXXX");
+      this.socket.emit("join-game", { gameId }, data => {
+        if (data.error) {
+          alert("Error: " + data.error);
+          return;
+        }
+
+        this.setState({
+          gameId,
+          playerCount: data.playerCount,
+          started: false
+        });
+      });
+
+      this.socket.on("player-join", () => {
+        this.setState({ playerCount: this.state.playerCount + 1 });
+      });
+
+      this.socket.on("start", data => {
+        console.log("START GAME!");
+        this.setState({ started: true, pieces: data.pieces });
+      });
+    });
   }
 
   // close socket connection
@@ -40,7 +74,14 @@ class PlayerPage extends React.Component {
   };
 
   render() {
-    return <Player />;
+    return (
+      <Player
+        gameId={this.state.gameId}
+        playerCount={this.state.playerCount}
+        started={this.state.started}
+        pieces={this.state.pieces}
+      />
+    );
   }
 }
 

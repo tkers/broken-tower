@@ -3,7 +3,7 @@ import Head from "next/head";
 import Nav from "../components/nav";
 import io from "socket.io-client";
 
-const DemoHome = () => (
+const DemoHome = ({ gameId }) => (
   <div>
     <Head>
       <title>Home</title>
@@ -13,15 +13,13 @@ const DemoHome = () => (
     <Nav />
 
     <div className="hero">
-      <h1 className="title">Welcome to Next.js!</h1>
-      <p className="description">
-        To get started, edit <code>pages/index.js</code> and save to reload.
-      </p>
+      <h1 className="title">{gameId}</h1>
+      <p className="description">Game created!</p>
 
       <div className="row">
         <a href="https://nextjs.org/docs" className="card">
-          <h3>Documentation &rarr;</h3>
-          <p>Learn more about Next.js in the documentation.</p>
+          <h3>Start Game!</h3>
+          <p>woop</p>
         </a>
         <a href="https://nextjs.org/learn" className="card">
           <h3>Next.js Learn &rarr;</h3>
@@ -88,9 +86,29 @@ const DemoHome = () => (
 
 class Home extends React.Component {
   // connect to WS server and listen event
+  state = {};
   componentDidMount() {
     this.socket = io();
     this.socket.on("message", this.handleMessage);
+    this.socket.on("connect", () => {
+      this.socket.emit("new-game", data => {
+        const gameId = data.gameId;
+        this.setState({ gameId });
+      });
+
+      const tryStart = () => {
+        this.socket.emit("start-game", data => {
+          if (data.error) {
+            console.log(data.error, "retry in 5 sec...");
+            // probably not enough players
+            setTimeout(() => tryStart(), 5000);
+          } else {
+            console.log("Game started!", data);
+          }
+        });
+      };
+      tryStart();
+    });
   }
 
   // close socket connection
@@ -105,7 +123,7 @@ class Home extends React.Component {
   };
 
   render() {
-    return <DemoHome />;
+    return <DemoHome gameId={this.state.gameId} />;
   }
 }
 
