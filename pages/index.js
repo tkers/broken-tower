@@ -1,8 +1,9 @@
-import React from 'react'
-import Head from 'next/head'
-import Nav from '../components/nav'
+import React from "react";
+import Head from "next/head";
+import Nav from "../components/nav";
+import io from "socket.io-client";
 
-const Home = () => (
+const DemoHome = () => (
   <div>
     <Head>
       <title>Home</title>
@@ -83,6 +84,29 @@ const Home = () => (
       }
     `}</style>
   </div>
-)
+);
 
-export default Home
+class Home extends React.Component {
+  // connect to WS server and listen event
+  componentDidMount() {
+    this.socket = io();
+    this.socket.on("message", this.handleMessage);
+  }
+
+  // close socket connection
+  componentWillUnmount() {
+    this.socket.off("message", this.handleMessage);
+    this.socket.close();
+  }
+
+  // add messages from server to the state
+  handleMessage = message => {
+    console.log("message:", message);
+  };
+
+  render() {
+    return <DemoHome />;
+  }
+}
+
+export default Home;
