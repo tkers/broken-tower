@@ -18,6 +18,11 @@ io.on("connection", socket => {
     messages.push(data);
     socket.broadcast.emit("message", data);
   });
+
+  socket.on("send-piece", (data, whatever) => {
+    console.log(data)
+    console.log(whatever)
+  })
 });
 
 nextApp.prepare().then(() => {
