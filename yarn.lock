@@ -745,6 +745,13 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.7.7":
+  version "7.8.4"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.4.tgz#d79f5a2040f7caa24d53e563aad49cbc05581308"
+  integrity sha512-neAp3zt80trRVBI1x0azq6c57aNBqYZH8KhMm3TaB7wEI5Q4A2SHfBHE8w9gOhI/lrqxtEbXZgQIrHP+wvSGwQ==
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.7.0", "@babel/template@^7.8.3":
   version "7.8.3"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.8.3.tgz#e02ad04fe262a657809327f578056ca15fd4d1b8"
@@ -778,6 +785,11 @@
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
+
+"@juggle/resize-observer@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@juggle/resize-observer/-/resize-observer-3.0.2.tgz#f4f326806826c0da5221411374e4c54902c327bb"
+  integrity sha512-9fEfZIxZ1qTahMSX50pigfSJ/1N6X2oABhmgd4Dt2SsPkZi0lTlvoHu5V2yrGZ6m+oALfS4tJrpx9nbVIxwOYQ==
 
 "@webassemblyjs/ast@1.8.5":
   version "1.8.5"
@@ -1909,6 +1921,11 @@ d@1, d@^1.0.1:
     es5-ext "^0.10.50"
     type "^1.0.1"
 
+debounce@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
+  integrity sha512-mYtLl1xfZLi1m4RtQYlZgJUNQjl4ZxVnHzIR8nLLgi4q1YT8o/WM+MK/f8yfcc9s5Ir5zRaPZyZU6xs1Syoocg==
+
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3:
   version "2.6.9"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
@@ -2272,6 +2289,11 @@ extglob@^2.0.4:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+fast-deep-equal@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
+  integrity sha1-ewUhjd+WZ79/Nwv3/bLLFf3Qqkk=
 
 fast-deep-equal@^3.1.1:
   version "3.1.1"
@@ -4271,6 +4293,51 @@ react-is@^16.8.1:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
 
+react-merge-refs@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-merge-refs/-/react-merge-refs-1.0.0.tgz#d6b297b9a62a266460a3c0d8b9d920731d8bbe63"
+  integrity sha512-VkvWuCR5VoTjb+VYUcOjkFo66HDv1Hw8VjKcwQtWr2lJnT8g7epRRyfz8+Zkl2WhwqNeqR0gIe0XYrBa9ePeXg==
+
+react-promise-suspense@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/react-promise-suspense/-/react-promise-suspense-0.3.2.tgz#202555b449cfb918f985aa93596029d842c4dcb4"
+  integrity sha512-1HAhT6eCSaeAp/u1mDsWgWQQDX/IhNjYAl4novVXq4DhH+AQPYEdagZM8M5SXI5qgbmmbcTZOqioH7MpsBmr8Q==
+  dependencies:
+    fast-deep-equal "^2.0.1"
+
+react-reconciler@0.24.0:
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.24.0.tgz#5a396b2c2f5efe8554134a5935f49f546723f2dd"
+  integrity sha512-gAGnwWkf+NOTig9oOowqid9O0HjTDC+XVGBCAmJYYJ2A2cN/O4gDdIuuUQjv8A4v6GDwVfJkagpBBLW5OW9HSw==
+  dependencies:
+    loose-envify "^1.1.0"
+    object-assign "^4.1.1"
+    prop-types "^15.6.2"
+    scheduler "^0.18.0"
+
+react-three-fiber@^4.0.12:
+  version "4.0.12"
+  resolved "https://registry.yarnpkg.com/react-three-fiber/-/react-three-fiber-4.0.12.tgz#b1a2da73137cea49af91dfd932da99587ebe6146"
+  integrity sha512-+DS0XzNA+P1TnX+v/BCqeJYQzIoN1vtcQBC0dGBPEwsPr/kDJnfOY9Ri+pSl63vIXas/Y9mw5rOGwFl8w9MVjw==
+  dependencies:
+    "@babel/runtime" "^7.7.7"
+    "@juggle/resize-observer" "^3.0.2"
+    react-merge-refs "^1.0.0"
+    react-promise-suspense "^0.3.2"
+    react-reconciler "0.24.0"
+    react-use-measure "^2.0.0"
+    resize-observer-polyfill "^1.5.1"
+    scheduler "0.18.0"
+    tiny-emitter "^2.1.0"
+    utility-types "^3.10.0"
+
+react-use-measure@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-use-measure/-/react-use-measure-2.0.0.tgz#f49b5cbde4cc18f5061d726a8a3db9fcd2244998"
+  integrity sha512-aYosukh38+eqjgNExd/OKEM0n5YSbl5niYYq3OAUWywf3deUjpnVfGMnwTmjF32+Owqr1sc3KKZku9n72lAaPA==
+  dependencies:
+    debounce "^1.2.0"
+
 react@16.12.0:
   version "16.12.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.12.0.tgz#0c0a9c6a142429e3614834d5a778e18aa78a0b83"
@@ -4394,6 +4461,11 @@ repeat-string@^1.6.1:
   version "1.6.1"
   resolved "https://registry.yarnpkg.com/repeat-string/-/repeat-string-1.6.1.tgz#8dcae470e1c88abc2d600fff4a776286da75e637"
 
+resize-observer-polyfill@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
+  integrity sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg==
+
 resolve-from@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-3.0.0.tgz#b22c7af7d9d6881bc8b6e653335eebcb0a188748"
@@ -4496,7 +4568,7 @@ sass-loader@8.0.2:
     schema-utils "^2.6.1"
     semver "^6.3.0"
 
-scheduler@^0.18.0:
+scheduler@0.18.0, scheduler@^0.18.0:
   version "0.18.0"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.18.0.tgz#5901ad6659bc1d8f3fdaf36eb7a67b0d6746b1c4"
   dependencies:
@@ -4924,6 +4996,11 @@ thread-loader@2.1.3:
     loader-utils "^1.1.0"
     neo-async "^2.6.0"
 
+three@^0.113.2:
+  version "0.113.2"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.113.2.tgz#04791d491fe4359330f9dbe7b767db18bfb35d67"
+  integrity sha512-x3vrKW41/UtbWbWduWKGlfIc043SvHWr3YltehYq+UGb9YglQ2oztNGvl2eut05JtNSmP11Mh3t6Xak5/0e+Fg==
+
 through2@^2.0.0:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.5.tgz#01c1e39eb31d07cb7d03a96a70823260b23132cd"
@@ -4936,6 +5013,11 @@ timers-browserify@^2.0.4:
   resolved "https://registry.yarnpkg.com/timers-browserify/-/timers-browserify-2.0.11.tgz#800b1f3eee272e5bc53ee465a04d0e804c31211f"
   dependencies:
     setimmediate "^1.0.4"
+
+tiny-emitter@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
+  integrity sha512-NB6Dk1A9xgQPMoGqC5CVXn123gWyte215ONT5Pp5a0yt4nlEoO1ZWeCwpncaekPHXO60i47ihFnZPiRPjRMq4Q==
 
 to-array@0.1.4:
   version "0.1.4"
@@ -5135,6 +5217,11 @@ util@^0.11.0:
   resolved "https://registry.yarnpkg.com/util/-/util-0.11.1.tgz#3236733720ec64bb27f6e26f421aaa2e1b588d61"
   dependencies:
     inherits "2.0.3"
+
+utility-types@^3.10.0:
+  version "3.10.0"
+  resolved "https://registry.yarnpkg.com/utility-types/-/utility-types-3.10.0.tgz#ea4148f9a741015f05ed74fd615e1d20e6bed82b"
+  integrity sha512-O11mqxmi7wMKCo6HKFt5AhO4BwY3VV68YU07tgxfz8zJTIxr4BpsezN49Ffwy9j3ZpwwJp4fkRwjRzq3uWE6Rg==
 
 utils-merge@1.0.1:
   version "1.0.1"
