@@ -17,14 +17,7 @@ function Piece(props) {
   // useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01));
 
   return (
-    <mesh
-      {...props}
-      ref={mesh}
-      scale={[props.width, 1, props.width]}
-      onClick={e => setActive(!active)}
-      onPointerOver={e => setHover(true)}
-      onPointerOut={e => setHover(false)}
-    >
+    <mesh {...props} ref={mesh} scale={[props.width, 1, props.width]}>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
       <meshStandardMaterial
         attach="material"
@@ -37,8 +30,15 @@ function Piece(props) {
 function Lookup() {
   const { camera } = useThree();
 
+  let [angle, setAngle] = useState(0);
+
   useFrame(() => {
+    camera.position.x = 50 * Math.cos(angle);
+    camera.position.y = 0;
+    camera.position.z = 50 * Math.sin(angle);
+
     camera.lookAt(0, 0, 0);
+    setAngle(angle + 0.005);
   });
 
   return null;
@@ -47,13 +47,12 @@ function Lookup() {
 function Tower() {
   return (
     <Canvas
-      style={{ height: 600, width: 800 }}
-      camera={{ position: [10, 0, 35] }}
+      style={{ height: 800, width: 800 }}
+      camera={{ position: [10, 0, 50] }}
     >
       <Lookup />
       <ambientLight />
       <pointLight position={[10, 10, 10]} />
-
       {getPieces(20).map(i => (
         <Piece key={i} position={[0, -i, 0]} width={i} />
       ))}
