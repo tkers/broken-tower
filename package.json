@@ -2,6 +2,13 @@
   "name": "broken-tower",
   "version": "0.1.0",
   "private": true,
+  "repository": "git@github.com:tkers/broken-tower.git",
+  "contributors": [
+    "Margot Bonilla <margot.bonilla@reaktor.com>",
+    "Tijn Kersjes <tijn@divbyzero.nl>",
+    "David Vázquez Púa <davazp@gmail.com>"
+  ],
+  "license": "CC-BY-NC-SA",
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
