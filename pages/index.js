@@ -6,20 +6,31 @@ import TowerStarted from "../components/tower-started";
 class Home extends React.Component {
   // connect to WS server and listen event
   state = { started: false, gameId: null };
+
   componentDidMount() {
     this.socket = io();
-    this.socket.on("message", this.handleMessage);
+
     this.socket.on("connect", () => {
       this.socket.emit("new-game", data => {
         const gameId = data.gameId;
         this.setState({ gameId, playerCount: 0, ip: data.ip, port: data.port });
       });
     });
+
     this.socket.on("player-join", () => {
-      this.setState({ playerCount: this.state.playerCount + 1 });
+      this.setState({ playerCount: this.state.playerCount + 1 }, () => {
+        if (this.state.playerCount >= 2) {
+          this.restartCountdown();
+        }
+      });
     });
+
     this.socket.on("player-leave", () => {
-      this.setState({ playerCount: this.state.playerCount - 1 });
+      this.setState({ playerCount: this.state.playerCount - 1 }, () => {
+        if (this.state.playerCount < 2) {
+          this.cancelCountdown();
+        }
+      });
     });
   }
 
@@ -29,9 +40,24 @@ class Home extends React.Component {
     this.socket.close();
   }
 
-  // add messages from server to the state
-  handleMessage = message => {
-    console.log("message:", message);
+  restartCountdown() {
+    clearInterval(this.countInterval);
+    this.setState({ countdown: 30 });
+    this.countInterval = setInterval(this.tick, 1000);
+  }
+
+  cancelCountdown() {
+    clearInterval(this.countInterval);
+    this.setState({ countdown: null });
+  }
+
+  tick = () => {
+    if (this.state.countdown === 0) {
+      this.cancelCountdown();
+      this.startGame();
+    } else {
+      this.setState({ countdown: this.state.countdown - 1 });
+    }
   };
 
   startGame = () => {
@@ -59,6 +85,7 @@ class Home extends React.Component {
         port={this.state.port}
         playerCount={this.state.playerCount}
         onStart={this.startGame}
+        countdown={this.state.countdown}
         socket={this.socket}
       />
     );
