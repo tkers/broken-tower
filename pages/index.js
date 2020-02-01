@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import io from "socket.io-client";
 
 import useMatch from "../hooks/useMatch";
+import useCountdown from "../hooks/useCountdown";
 
 import Layout from "../components/layout";
 import TowerWaiting from "../components/tower-waiting";
@@ -26,6 +27,16 @@ const Home = () => {
     }
   }, [connected]);
 
+  const { start, stop, time } = useCountdown(() => startMatch());
+
+  useEffect(() => {
+    if (playerCount >= 2) {
+      start(30);
+    } else {
+      stop();
+    }
+  }, [playerCount]);
+
   return (
     <Layout>
       {connected ? (
@@ -40,6 +51,7 @@ const Home = () => {
           <TowerWaiting
             matchId={match.id}
             playerCount={playerCount}
+            countdown={time}
             onStart={startMatch}
             ip={address.ip}
             port={address.port}
