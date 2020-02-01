@@ -38,6 +38,11 @@ const Home = () => {
     }
   }, [playerCount]);
 
+  const onStart = () => {
+    stop();
+    startMatch();
+  };
+
   return (
     <Layout>
       {connected ? (
@@ -61,7 +66,7 @@ const Home = () => {
             matchId={match.id}
             playerCount={playerCount}
             countdown={time}
-            onStart={startMatch}
+            onStart={onStart}
             ip={address.ip}
             port={address.port}
           />
