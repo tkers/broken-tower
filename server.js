@@ -58,6 +58,7 @@ io.on("connection", socket => {
     game = gamelist[data.gameId];
     if (game && !game.started) {
       game.players.forEach(sock => sock.emit("player-join"));
+      game.host.emit("player-join");
       game.players.push(socket);
       reply({ playerCount: game.players.length });
     } else {
@@ -69,7 +70,6 @@ io.on("connection", socket => {
     game.players.forEach(sock => sock.emit("send-piece", data));
   });
 
-  console.log("New connection!");
   socket.emit("message", "Welcome!");
 });
 
