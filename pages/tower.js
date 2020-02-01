@@ -3,18 +3,22 @@ import { Canvas, useFrame, useThree } from "react-three-fiber";
 
 const range = i => new Array(i + 1).fill(0).map((_, i) => i);
 
-const getPieces = n =>
-  range(n - 1)
-    .map(i => i + 1)
-    .reverse();
+function shuffle(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function getStack(n) {
+  return shuffle(range(n * 2))
+    .slice(0, Math.floor(n))
+    .sort((x, y) => y - x);
+}
 
 function Piece(props) {
   // This reference will give us direct access to the mesh
   const mesh = useRef();
-
-  // Set up state for the hovered and active state
-  const [hovered, setHover] = useState(false);
-  const [active, setActive] = useState(false);
 
   // Rotate mesh every frame, this is outside of React without overhead
   // useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01));
@@ -22,10 +26,7 @@ function Piece(props) {
   return (
     <mesh {...props} ref={mesh} scale={[props.width, 1, props.width]}>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial
-        attach="material"
-        color={hovered ? "hotpink" : "orange"}
-      />
+      <meshStandardMaterial attach="material" color={"orange"} />
     </mesh>
   );
 }
@@ -51,16 +52,15 @@ function Lookup() {
   return null;
 }
 
+let stack = getStack(20);
+
 function Tower() {
-  let [pieces, setPieces] = useState([20]);
+  let [pieces, setPieces] = useState([]);
 
   useEffect(() => {
     let timeout = setTimeout(() => {
-      let last = pieces[pieces.length - 1];
-      if (last > 1) {
-        setPieces([...pieces, last - 1]);
-      } else {
-        setPieces([20]);
+      if (pieces.length < stack.length) {
+        setPieces(stack.slice(0, pieces.length + 1));
       }
     }, 1000);
     return () => clearTimeout(timeout);
