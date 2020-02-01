@@ -4,7 +4,7 @@ import Nav from "../components/nav";
 import io from "socket.io-client";
 import QRCode from "qrcode.react";
 
-const DemoHome = ({ gameId, ip, port }) => (
+const DemoHome = ({ gameId, started, playerCount, onStart, ip, port }) => (
   <div>
     <Head>
       <title>Home</title>
@@ -14,30 +14,29 @@ const DemoHome = ({ gameId, ip, port }) => (
     <Nav />
 
     <div className="hero">
-      <h1 className="title">{gameId}</h1>
+      <h1 className="title">{started ? "Game started" : gameId}</h1>
       <p className="description">
-        <QRCode
-          value={`http://${ip}:${port}/player?gameId=${gameId}`}
-          size={512}
-          bgColor="#FFFF00"
-          fgColor="#000000"
-          includeMargin={true}
-        />
+        {!started && (
+          <QRCode
+            value={`http://${ip}:${port}/player?gameId=${gameId}`}
+            size={512}
+            bgColor="#FFFF00"
+            fgColor="#000000"
+            includeMargin={true}
+          />
+        )}
       </p>
 
       <div className="row">
-        <a href="https://nextjs.org/docs" className="card">
+        <a href="#" onClick={onStart} className="card">
           <h3>Start Game!</h3>
-          <p>woop</p>
+          <p>{playerCount} players waiting</p>
         </a>
-        <a href="https://nextjs.org/learn" className="card">
+        <a href="#" className="card">
           <h3>Next.js Learn &rarr;</h3>
           <p>Learn about Next.js by following an interactive tutorial!</p>
         </a>
-        <a
-          href="https://github.com/zeit/next.js/tree/master/examples"
-          className="card"
-        >
+        <a href="#" className="card">
           <h3>Examples &rarr;</h3>
           <p>Find other example boilerplates on the Next.js GitHub.</p>
         </a>
@@ -95,28 +94,18 @@ const DemoHome = ({ gameId, ip, port }) => (
 
 class Home extends React.Component {
   // connect to WS server and listen event
-  state = {};
+  state = { started: false, gameId: null };
   componentDidMount() {
     this.socket = io();
     this.socket.on("message", this.handleMessage);
     this.socket.on("connect", () => {
       this.socket.emit("new-game", data => {
         const gameId = data.gameId;
-        this.setState({ gameId, ip: data.ip, port: data.port });
+        this.setState({ gameId, playerCount: 0, ip: data.ip, port: data.port });
       });
-
-      const tryStart = () => {
-        this.socket.emit("start-game", data => {
-          if (data.error) {
-            console.log(data.error, "retry in 5 sec...");
-            // probably not enough players
-            setTimeout(() => tryStart(), 5000);
-          } else {
-            console.log("Game started!", data);
-          }
-        });
-      };
-      tryStart();
+    });
+    this.socket.on("player-join", () => {
+      this.setState({ playerCount: this.state.playerCount + 1 });
     });
   }
 
@@ -131,12 +120,26 @@ class Home extends React.Component {
     console.log("message:", message);
   };
 
+  startGame = () => {
+    this.socket.emit("start-game", data => {
+      if (data.error) {
+        alert(data.error);
+      } else {
+        console.log("Game started!", data);
+        this.setState({ started: true });
+      }
+    });
+  };
+
   render() {
     return (
       <DemoHome
         gameId={this.state.gameId}
+        started={this.state.started}
         ip={this.state.ip}
         port={this.state.port}
+        playerCount={this.state.playerCount}
+        onStart={this.startGame}
       />
     );
   }
