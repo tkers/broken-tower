@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import useMatch from "../hooks/useMatch";
 
+import Layout from "../components/layout";
+
 import PlayerWaiting from "../components/player-waiting";
 import PlayerStarted from "../components/player-started";
 import PlayerDisconnected from "../components/player-disconnected";
@@ -26,19 +28,23 @@ const PlayerPage = () => {
     }
   }, [connected, router.query.matchId]);
 
-  return connected ? (
-    match.started ? (
-      <PlayerStarted
-        matchId={match.id}
-        pieces={pieces}
-        myPieces={myPieces}
-        sendPiece={sendPiece}
-      />
-    ) : (
-      <PlayerWaiting matchId={match.id} playerCount={playerCount} />
-    )
-  ) : (
-    <PlayerDisconnected />
+  return (
+    <Layout>
+      {connected ? (
+        match.started ? (
+          <PlayerStarted
+            matchId={match.id}
+            pieces={pieces}
+            myPieces={myPieces}
+            sendPiece={sendPiece}
+          />
+        ) : (
+          <PlayerWaiting matchId={match.id} playerCount={playerCount} />
+        )
+      ) : (
+        <PlayerDisconnected />
+      )}
+    </Layout>
   );
 };
 

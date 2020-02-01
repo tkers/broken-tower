@@ -1,36 +1,36 @@
 import React from "react";
-import Head from "next/head";
-import Nav from "./nav";
+
 import Tower from "./tower";
 import { Swipeable } from "react-swipeable";
 
-const PlayerStarted = ({ matchId, pieces, myPieces, sendPiece }) => {
+const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
+  // myPieces = [40, 23, 12, 5];
+  // pieces = [60, 50, 45];
   return (
-    <Swipeable onSwipedUp={sendPiece}>
-      <div className={"player-board"}>
-        <Head>
-          <title>Player</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <Nav />
-
+    <Swipeable onSwipedUp={() => {}}>
+      <div className="wrapper">
         <div>
-          Game started
-          <br />
-          Match ID: {matchId}
-          <br />
           My Pieces: {myPieces.join(", ")}
           <br />
-          <button onClick={sendPiece}>Send Piece</button>
+          <button onClick={sendPiece} className="bigButton">
+            Send Piece
+          </button>
         </div>
-
-        <Tower pieces={pieces} />
+        <Tower pieces={pieces} myPieces={myPieces} />
       </div>
       <style jsx>{`
-        .player-board {
-          background-color: lightblue;
-          height: 100vh;
+        .wrapper {
+          max-width: 600px;
+          margin: 50px auto 0;
+          padding: 50px;
+          text-align: center;
+        }
+        .bigButton {
+          background-color: #00aa44;
+          padding: 16px 32px;
+          display: block;
+          margin: 0 auto;
+          border: none;
         }
       `}</style>
     </Swipeable>

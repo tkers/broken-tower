@@ -1,6 +1,4 @@
 import React from "react";
-import Head from "next/head";
-import Nav from "../components/nav";
 import QRCode from "qrcode.react";
 
 const TowerWaiting = ({
@@ -14,13 +12,6 @@ const TowerWaiting = ({
   const url = `http://${ip}:${port}/player?matchId=${matchId}`;
   return (
     <div>
-      <Head>
-        <title>Home</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <Nav />
-
       <div className="hero">
         <h1 className="title">
           <a href={url}>{matchId}</a>
@@ -29,8 +20,8 @@ const TowerWaiting = ({
           <QRCode
             value={url}
             size={512}
-            bgColor="#FFFF00"
-            fgColor="#000000"
+            bgColor="#ffffff"
+            fgColor="#ff5722"
             includeMargin={true}
           />
           {countdown && <h1 className="title">Starting in {countdown}...</h1>}

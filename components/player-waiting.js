@@ -1,23 +1,34 @@
 import React from "react";
-import Head from "next/head";
-import Nav from "./nav";
+import QRCode from "qrcode.react";
 
 const PlayerWaiting = ({ matchId, playerCount }) => (
-  <div>
-    <Head>
-      <title>Player</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-
-    <Nav />
-
+  <div className="wrapper">
+    <QRCode
+      value={window.location.href}
+      size={265}
+      bgColor="#ffffff"
+      fgColor="#ff5722"
+      includeMargin={true}
+    />
     <div>
-      Waiting for other players...
-      <br />
-      Match ID: {matchId}
-      <br />
-      Player Count:{playerCount}
+      {playerCount < 2 ? (
+        "Waiting for other players to join..."
+      ) : (
+        <p>
+          You and <strong>{playerCount - 1}</strong> other{" "}
+          {playerCount - 1 === 1 ? "player" : "players"} waiting to start...
+        </p>
+      )}
     </div>
+    <style jsx>
+      {`
+        .wrapper {
+          max-width: 600px;
+          margin: 50px auto 0;
+          padding: 50px;
+        }
+      `}
+    </style>
   </div>
 );
 

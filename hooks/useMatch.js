@@ -30,7 +30,9 @@ const useMatch = () => {
   };
 
   const onDealPieces = data => {
-    setMyPieces(data.pieces);
+    const myPieces = data.pieces;
+    data.pieces.sort((a, b) => b - a);
+    setMyPieces(myPieces);
   };
 
   const onMatchStarted = () => {

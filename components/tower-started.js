@@ -1,18 +1,10 @@
 import React from "react";
-import Head from "next/head";
-import Nav from "../components/nav";
+
 import Tower from "./tower";
 
 const TowerStarted = ({ matchId, playerCount, socket, pieces }) => {
   return (
     <div>
-      <Head>
-        <title>Tower</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <Nav />
-
       <div className="hero">
         <h1 className="title">Game Started!</h1>
         <p className="description">{playerCount} players</p>
