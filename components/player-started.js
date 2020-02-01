@@ -25,7 +25,7 @@ const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
           font-size: 18px;
           max-width: 600px;
           margin: 0 auto 0;
-          padding: 50px;
+          padding: 10px;
           text-align: center;
         }
         .bigButton {

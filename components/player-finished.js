@@ -16,7 +16,7 @@ const PlayerFinished = ({ pieces }) => {
         .wrapper {
           max-width: 600px;
           margin: 50px auto 0;
-          padding: 50px;
+          padding: 10px;
           text-align: center;
         }
         .hero {
