@@ -45,7 +45,7 @@ io.on("connection", socket => {
     reply({ matchId, ip, port });
   });
 
-  socket.on("start-match", reply => {
+  socket.on("start-match", () => {
     let players = getPlayers();
 
     if (players.length < 2) {
@@ -68,8 +68,6 @@ io.on("connection", socket => {
     });
 
     broadcastAll("start");
-
-    reply({ pieces, perPlayer });
   });
 
   socket.on("connect-match", (data, reply) => {
@@ -78,7 +76,7 @@ io.on("connection", socket => {
     if (match) {
       match.connections.push({ type: "spectator", socket });
       const players = getPlayers();
-      reply({ playerCount: players.length });
+      reply({ playerCount: players.length, started: match.started });
     } else {
       reply({ error: "Match does not exist" });
     }
