@@ -39,6 +39,10 @@ class Home extends React.Component {
         }
       });
     });
+
+    this.socket.on("send-piece", data => {
+      this.receivePiece(data);
+    });
   }
 
   // close socket connection
@@ -76,6 +80,10 @@ class Home extends React.Component {
         this.setState({ started: true });
       }
     });
+  };
+
+  receivePiece = piece => {
+    console.log("Received piece:", piece);
   };
 
   render() {
