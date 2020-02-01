@@ -66,6 +66,14 @@ io.on("connection", socket => {
     }
   });
 
+  socket.on("disconnect", () => {
+    if (game) {
+      game.players = game.players.filter(p => p !== socket);
+      game.players.forEach(sock => sock.emit("player-leave"));
+      game.host.emit("player-leave");
+    }
+  });
+
   socket.on("send-piece", data => {
     game.players.forEach(sock => sock.emit("send-piece", data));
   });

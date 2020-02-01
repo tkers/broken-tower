@@ -55,6 +55,9 @@ class PlayerPage extends React.Component {
       this.socket.on("player-join", () => {
         this.setState({ playerCount: this.state.playerCount + 1 });
       });
+      this.socket.on("player-leave", () => {
+        this.setState({ playerCount: this.state.playerCount - 1 });
+      });
 
       this.socket.on("start", data => {
         console.log("START GAME!");
