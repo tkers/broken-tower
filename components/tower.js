@@ -36,62 +36,6 @@ function Lookup({ stackSize }) {
   );
 }
 
-function Score({ last, wrong }) {
-  return (
-    <div className="container">
-      <table className="score">
-        <tr>
-          <th>Last Piece</th>
-          <th>Wrong Pieces</th>
-        </tr>
-        <tr>
-          <td>{last}</td>
-          <td>{wrong}</td>
-        </tr>
-      </table>
-      <style jsx>{`
-        .container {
-          position: absolute;
-          bottom: 0;
-          width: 100vw;
-          right: 0;
-        }
-        .score {
-          border-collapse: collapse;
-          font-size: 24px;
-          margin-top: 50px;
-          color: darkOrange;
-          text-align: center;
-          margin: 0 auto;
-        }
-        .container td,
-        .container th {
-          border: 1px solid #ddd;
-          padding: 8px;
-        }
-      `}</style>
-    </div>
-  );
-}
-
-const isBadPiece = (arr, i) => {
-  if (i === 0) return false;
-  for (let k = i - 1; k >= 0; k--) {
-    if (arr[i] > arr[k]) {
-      return true;
-    }
-  }
-  return false;
-};
-
-const countWrongPieces = arr => {
-  let n = 0;
-  arr.forEach((width, i, array) => {
-    if (isBadPiece(array, i)) n++;
-  });
-  return n;
-};
-
 function Tower({ pieces, myPieces = [] }) {
   return (
     <>
@@ -131,12 +75,6 @@ function Tower({ pieces, myPieces = [] }) {
           <Piece position={[0, -1, 0]} width={101} color={"#ab9a63"} />
         </group>
       </Canvas>
-      {pieces.length > 0 && (
-        <Score
-          last={pieces[pieces.length - 1]}
-          wrong={countWrongPieces(pieces)}
-        />
-      )}
     </>
   );
 }
