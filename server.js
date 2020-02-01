@@ -53,6 +53,11 @@ io.on("connection", socket => {
       return;
     }
 
+    if (match.started) {
+      // can not start again
+      return;
+    }
+
     match.started = true;
 
     const pieces = Array.from({ length: 100 }, (v, k) => k + 1);
