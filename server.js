@@ -49,7 +49,7 @@ io.on("connection", socket => {
     let players = getPlayers();
 
     if (players.length < 2) {
-      reply({ error: "Need at least 2 players to start" });
+      // reply({ error: "Need at least 2 players to start" });
       return;
     }
 
