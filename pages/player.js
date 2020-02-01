@@ -13,7 +13,8 @@ const PlayerPage = () => {
     match,
     joinMatch,
     playerCount,
-    myPieces,
+    pieces, // The Pieces on the tower
+    myPieces, // The pieces that you hold
     sendPiece
   } = useMatch();
 
@@ -29,7 +30,8 @@ const PlayerPage = () => {
     match.started ? (
       <PlayerStarted
         matchId={match.id}
-        pieces={myPieces}
+        pieces={pieces}
+        myPieces={myPieces}
         sendPiece={sendPiece}
       />
     ) : (
