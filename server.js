@@ -2,14 +2,23 @@ const app = require("express")();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const next = require("next");
+
+const { generateId, shuffle } = require("./utils/random.js");
+const { getAddresses } = require("./utils/ip");
+
 const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
-const { generateId, shuffle } = require("./utils/random.js");
+// address and port to listen on
+const addr = dev ? "0.0.0.0" : "127.0.0.1";
+const port = 3000;
 
 // fake DB
 const gamelist = {};
+
+// pass the IP to client for easy development
+const ip = getAddresses();
 
 // socket.io server
 io.on("connection", socket => {
@@ -21,7 +30,7 @@ io.on("connection", socket => {
     gameId = generateId(4);
     game = { started: false, players: [], host: socket };
     gamelist[gameId] = game;
-    reply({ gameId });
+    reply({ gameId, ip, port });
   });
 
   socket.on("start-game", reply => {
@@ -73,8 +82,8 @@ nextApp.prepare().then(() => {
     return nextHandler(req, res);
   });
 
-  server.listen(3000, err => {
+  server.listen(port, addr, err => {
     if (err) throw err;
-    console.log("> Ready on http://localhost:3000");
+    console.log(`> Ready on http://${addr}:${port}`);
   });
 });
