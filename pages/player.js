@@ -37,7 +37,8 @@ class PlayerPage extends React.Component {
     this.socket.on("connect", () => {
       // this.socket.emit("send-piece", { piece: "piece" });
 
-      const gameId = window.prompt("Game ID", "XXXX");
+      const urlParams = new URLSearchParams(window.location.search);
+      const gameId = urlParams.get("gameId");
       this.socket.emit("join-game", { gameId }, data => {
         if (data.error) {
           alert("Error: " + data.error);
