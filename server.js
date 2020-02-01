@@ -67,7 +67,7 @@ io.on("connection", socket => {
       });
     });
 
-    broadcastAll("start");
+    broadcastAll("start", { piecesCount: players.length * perPlayer });
   });
 
   socket.on("connect-match", (data, reply) => {

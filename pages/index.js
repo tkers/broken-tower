@@ -16,6 +16,7 @@ const Home = () => {
     match,
     playerCount,
     pieces,
+    remainingPieces,
     address
   } = useMatch();
 
@@ -33,6 +34,7 @@ const Home = () => {
             matchId={match.id}
             playerCount={playerCount}
             pieces={pieces}
+            remainingPieces={remainingPieces}
           />
         ) : (
           <TowerWaiting

@@ -19,7 +19,7 @@ function Lookup({ stackSize }) {
     let distance = 120;
 
     camera.position.x = distance * Math.cos(angle);
-    camera.position.y = 4 * stackSize + 10;
+    camera.position.y = 1.5 * stackSize + 20;
     camera.position.z = distance * Math.sin(angle);
 
     camera.lookAt(0, stackSize, 0);
@@ -34,11 +34,13 @@ function Lookup({ stackSize }) {
   );
 }
 
-function Score({ score }) {
+function Score({ last, wrong }) {
   return (
     <div className="container">
       <p>Last piece</p>
-      <span className="score">{score}</span>
+      <span className="score">{last}</span>
+      <p>wrong pieces</p>
+      <span className="score">{wrong}</span>
       <style jsx>{`
         .container {
           margin-top: 50px;
@@ -56,16 +58,30 @@ function Score({ score }) {
   );
 }
 
+const getWrongPieces = arr => {
+  let n = 0;
+  arr.forEach((width, i, array) => {
+    const bad = i !== 0 && array[i] > array[i - 1];
+    if (bad) n++;
+  });
+  return n;
+};
+
 function Tower({ pieces, myPieces = [] }) {
   return (
     <>
-      {pieces.length > 0 && <Score score={pieces[pieces.length - 1]} />}
+      {pieces.length > 0 && (
+        <Score
+          last={pieces[pieces.length - 1]}
+          wrong={getWrongPieces(pieces)}
+        />
+      )}
 
       <Canvas style={{ height: 500 }}>
         <Lookup stackSize={pieces.length + myPieces.length + 20} />
         <ambientLight />
         <pointLight
-          position={[20, pieces.length + myPieces.length + 30, 30]}
+          position={[20, (pieces.length + myPieces.length) / 2, 30]}
           intensity={0.8}
         />
 
@@ -75,20 +91,29 @@ function Tower({ pieces, myPieces = [] }) {
               key={width}
               position={[0, pieces.length + 20 + i, 0]}
               width={width}
-              color={i == 0 ? "#00AA44" : "#005599"}
+              color={i == 0 ? "#228877" : "#005599"}
             />
           ))}
 
-          {pieces.map((width, i, array) => (
-            <Piece
-              key={width}
-              position={[0, i, 0]}
-              width={width}
-              color={i == array.length - 1 ? "#ee2233" : "orange"}
-            />
-          ))}
+          {pieces.map((width, i, array) => {
+            const bad = i !== 0 && array[i] > array[i - 1];
+            return (
+              <Piece
+                key={width}
+                position={[0, i, 0]}
+                width={width}
+                color={
+                  bad
+                    ? "#dd2244"
+                    : i == array.length - 1
+                    ? "#ddaa00"
+                    : "#ab9a63"
+                }
+              />
+            );
+          })}
 
-          <Piece position={[0, -1, 0]} width={101} color={"orange"} />
+          <Piece position={[0, -1, 0]} width={101} color={"#ab9a63"} />
         </group>
       </Canvas>
     </>

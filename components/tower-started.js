@@ -2,12 +2,11 @@ import React from "react";
 
 import Tower from "./tower";
 
-const TowerStarted = ({ matchId, playerCount, socket, pieces }) => {
+const TowerStarted = ({ remainingPieces, pieces }) => {
   return (
     <div>
       <div className="hero">
-        <h1 className="title">Game Started!</h1>
-        <p className="description">{playerCount} players</p>
+        <p className="description">{remainingPieces} pieces remaining</p>
       </div>
 
       <Tower pieces={pieces} />
@@ -17,14 +16,7 @@ const TowerStarted = ({ matchId, playerCount, socket, pieces }) => {
           width: 100%;
           color: #333;
         }
-        .title {
-          margin: 0;
-          width: 100%;
-          padding-top: 80px;
-          line-height: 1.15;
-          font-size: 48px;
-        }
-        .title,
+
         .description {
           text-align: center;
         }

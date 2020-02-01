@@ -2,7 +2,10 @@ import React, { useEffect, useState, useReducer, useRef } from "react";
 import useSocket from "../hooks/useSocket";
 
 const useMatch = () => {
-  const [match, setMatch] = useState({ started: false, id: null });
+  const [match, setMatch] = useState({
+    started: false,
+    id: null
+  });
   const [address, setAddress] = useState({ ip: null, port: null });
 
   const [playerCount, addPlayerCount] = useReducer(
@@ -14,6 +17,11 @@ const useMatch = () => {
     []
   );
   const [myPieces, setMyPieces] = useState([]);
+
+  const [remainingPieces, addRemainingPieces] = useReducer(
+    (total, delta) => total + delta,
+    0
+  );
 
   const { socket, connected } = useSocket();
 
@@ -27,6 +35,7 @@ const useMatch = () => {
 
   const onSendPiece = size => {
     addPiece(size);
+    addRemainingPieces(-1);
   };
 
   const onDealPieces = data => {
@@ -35,8 +44,9 @@ const useMatch = () => {
     setMyPieces(myPieces);
   };
 
-  const onMatchStarted = () => {
+  const onMatchStarted = data => {
     setMatch({ ...match, started: true });
+    addRemainingPieces(data.piecesCount);
   };
 
   useEffect(() => {
@@ -114,6 +124,7 @@ const useMatch = () => {
     sendPiece,
     pieces,
     myPieces,
+    remainingPieces,
     address
   };
 };
