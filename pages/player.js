@@ -6,12 +6,20 @@ import PlayerStarted from "../components/player-started";
 class PlayerPage extends React.Component {
   // connect to WS server and listen event
 
-  state = { gameId: null, started: false, playerCount: 0, pieces: [] };
+  state = {
+    connected: false,
+    gameId: null,
+    started: false,
+    playerCount: 0,
+    pieces: []
+  };
 
   componentDidMount() {
     this.socket = io();
     this.socket.on("message", this.handleMessage);
     this.socket.on("connect", () => {
+      this.setState({ connected: true });
+
       const urlParams = new URLSearchParams(window.location.search);
       const gameId = urlParams.get("gameId");
       this.socket.emit("join-game", { gameId }, data => {
@@ -26,18 +34,22 @@ class PlayerPage extends React.Component {
           started: false
         });
       });
+    });
 
-      this.socket.on("player-join", () => {
-        this.setState({ playerCount: this.state.playerCount + 1 });
-      });
-      this.socket.on("player-leave", () => {
-        this.setState({ playerCount: this.state.playerCount - 1 });
-      });
+    this.socket.on("disconnect", () => {
+      this.setState({ connected: false });
+    });
 
-      this.socket.on("start", data => {
-        console.log("START GAME!");
-        this.setState({ started: true, pieces: data.pieces });
-      });
+    this.socket.on("player-join", () => {
+      this.setState({ playerCount: this.state.playerCount + 1 });
+    });
+    this.socket.on("player-leave", () => {
+      this.setState({ playerCount: this.state.playerCount - 1 });
+    });
+
+    this.socket.on("start", data => {
+      console.log("START GAME!");
+      this.setState({ started: true, pieces: data.pieces });
     });
   }
 
@@ -53,18 +65,26 @@ class PlayerPage extends React.Component {
   };
 
   render() {
-    return this.state.started ? (
-      <PlayerStarted
-        gameId={this.state.gameId}
-        pieces={this.state.pieces}
-        socket={this.socket}
-      />
+    return this.state.connected ? (
+      this.state.started ? (
+        <PlayerStarted
+          gameId={this.state.gameId}
+          pieces={this.state.pieces}
+          socket={this.socket}
+        />
+      ) : (
+        <PlayerWaiting
+          gameId={this.state.gameId}
+          playerCount={this.state.playerCount}
+          socket={this.socket}
+        />
+      )
     ) : (
-      <PlayerWaiting
-        gameId={this.state.gameId}
-        playerCount={this.state.playerCount}
-        socket={this.socket}
-      />
+      <div>
+        Disconnected :(
+        <br />
+        <a href="/">Refresh</a>
+      </div>
     );
   }
 }

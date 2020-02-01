@@ -5,16 +5,21 @@ import TowerStarted from "../components/tower-started";
 
 class Home extends React.Component {
   // connect to WS server and listen event
-  state = { started: false, gameId: null };
+  state = { connected: false, started: false, gameId: null };
 
   componentDidMount() {
     this.socket = io();
 
     this.socket.on("connect", () => {
+      this.setState({ connected: true });
       this.socket.emit("new-game", data => {
         const gameId = data.gameId;
         this.setState({ gameId, playerCount: 0, ip: data.ip, port: data.port });
       });
+    });
+
+    this.socket.on("disconnect", () => {
+      this.setState({ connected: false });
     });
 
     this.socket.on("player-join", () => {
@@ -72,22 +77,30 @@ class Home extends React.Component {
   };
 
   render() {
-    return this.state.started ? (
-      <TowerStarted
-        gameId={this.state.gameId}
-        playerCount={this.state.playerCount}
-        socket={this.socket}
-      />
+    return this.state.connected ? (
+      this.state.started ? (
+        <TowerStarted
+          gameId={this.state.gameId}
+          playerCount={this.state.playerCount}
+          socket={this.socket}
+        />
+      ) : (
+        <TowerWaiting
+          gameId={this.state.gameId}
+          ip={this.state.ip}
+          port={this.state.port}
+          playerCount={this.state.playerCount}
+          onStart={this.startGame}
+          countdown={this.state.countdown}
+          socket={this.socket}
+        />
+      )
     ) : (
-      <TowerWaiting
-        gameId={this.state.gameId}
-        ip={this.state.ip}
-        port={this.state.port}
-        playerCount={this.state.playerCount}
-        onStart={this.startGame}
-        countdown={this.state.countdown}
-        socket={this.socket}
-      />
+      <div>
+        Disconnected :(
+        <br />
+        <a href="/">Refresh</a>
+      </div>
     );
   }
 }
