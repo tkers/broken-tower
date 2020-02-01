@@ -82,7 +82,7 @@ function Tower({ pieces, myPieces = [] }) {
             />
           ))}
 
-          <Piece position={[0, -1, 0]} width={62} color={"orange"} />
+          <Piece position={[0, -1, 0]} width={101} color={"orange"} />
         </group>
       </Canvas>
     </>
