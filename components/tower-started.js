@@ -3,7 +3,7 @@ import Head from "next/head";
 import Nav from "../components/nav";
 import Tower from "./tower";
 
-const TowerStarted = ({ gameId, playerCount, socket, pieces }) => {
+const TowerStarted = ({ matchId, playerCount, socket, pieces }) => {
   return (
     <div>
       <Head>

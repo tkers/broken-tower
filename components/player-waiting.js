@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 import Nav from "./nav";
 
-const PlayerWaiting = ({ gameId, playerCount }) => (
+const PlayerWaiting = ({ matchId, playerCount }) => (
   <div>
     <Head>
       <title>Player</title>
@@ -14,7 +14,7 @@ const PlayerWaiting = ({ gameId, playerCount }) => (
     <div>
       Waiting for other players...
       <br />
-      Game ID: {gameId}
+      Match ID: {matchId}
       <br />
       Player Count:{playerCount}
     </div>

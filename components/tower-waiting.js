@@ -4,14 +4,14 @@ import Nav from "../components/nav";
 import QRCode from "qrcode.react";
 
 const TowerWaiting = ({
-  gameId,
+  matchId,
   playerCount,
   onStart,
   ip,
   port,
   countdown
 }) => {
-  const url = `http://${ip}:${port}/player?gameId=${gameId}`;
+  const url = `http://${ip}:${port}/player?matchId=${matchId}`;
   return (
     <div>
       <Head>
@@ -23,7 +23,7 @@ const TowerWaiting = ({
 
       <div className="hero">
         <h1 className="title">
-          <a href={url}>{gameId}</a>
+          <a href={url}>{matchId}</a>
         </h1>
         <p className="description">
           <QRCode

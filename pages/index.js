@@ -7,16 +7,22 @@ import TowerDisconnected from "../components/tower-disconnected";
 
 class Home extends React.Component {
   // connect to WS server and listen event
-  state = { connected: false, started: false, gameId: null, pieces: [] };
+  state = { connected: false, started: false, matchId: null, pieces: [] };
 
   componentDidMount() {
     this.socket = io();
 
     this.socket.on("connect", () => {
       this.setState({ connected: true });
-      this.socket.emit("new-game", data => {
-        const gameId = data.gameId;
-        this.setState({ gameId, playerCount: 0, ip: data.ip, port: data.port });
+      this.socket.emit("create-match", data => {
+        console.log("createmathc reply:", data);
+        const matchId = data.matchId;
+        this.setState({
+          matchId,
+          playerCount: 0,
+          ip: data.ip,
+          port: data.port
+        });
       });
     });
 
@@ -72,7 +78,7 @@ class Home extends React.Component {
   };
 
   startGame = () => {
-    this.socket.emit("start-game", data => {
+    this.socket.emit("start-match", data => {
       if (data.error) {
         alert(data.error);
       } else {
@@ -97,14 +103,14 @@ class Home extends React.Component {
     return this.state.connected ? (
       this.state.started ? (
         <TowerStarted
-          gameId={this.state.gameId}
+          matchId={this.state.matchId}
           playerCount={this.state.playerCount}
           socket={this.socket}
           pieces={this.state.pieces}
         />
       ) : (
         <TowerWaiting
-          gameId={this.state.gameId}
+          matchId={this.state.matchId}
           ip={this.state.ip}
           port={this.state.port}
           playerCount={this.state.playerCount}

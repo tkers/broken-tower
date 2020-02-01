@@ -17,26 +17,35 @@ const port = 3000;
 // pass the IP to client for easy development
 const ip = getAddresses();
 
-// list of the active games
-const gamelist = {};
+// list of the active matches
+const matchList = {};
 
 // socket.io server
 io.on("connection", socket => {
-  // keep track of the game/id the client is connected to
-  let game, gameId;
-
-  socket.on("new-game", reply => {
-    gameId = generateId(4);
-    game = { started: false, connections: [{ type: "spectator", socket }] };
-    gamelist[gameId] = game;
-    reply({ gameId, ip, port });
-  });
+  // keep track of the match/id the client is connected to
+  let match, matchId;
 
   const getPlayers = () => {
-    return game.connections.filter(connection => connection.type === "player");
+    return match.connections.filter(connection => connection.type === "player");
   };
 
-  socket.on("start-game", reply => {
+  const broadcastAll = (...args) =>
+    match.connections.forEach(conn => {
+      if (conn.socket) {
+        conn.socket.emit(...args);
+      }
+    });
+
+  const getConnection = () => match.connections.find(c => c.socket === socket);
+
+  socket.on("create-match", reply => {
+    matchId = generateId(4);
+    match = { started: false, connections: [{ type: "spectator", socket }] };
+    matchList[matchId] = match;
+    reply({ matchId, ip, port });
+  });
+
+  socket.on("start-match", reply => {
     let players = getPlayers();
 
     if (players.length < 2) {
@@ -44,7 +53,7 @@ io.on("connection", socket => {
       return;
     }
 
-    game.started = true;
+    match.started = true;
 
     const pieces = Array.from({ length: 60 }, (v, k) => k + 1);
     shuffle(pieces);
@@ -53,37 +62,52 @@ io.on("connection", socket => {
 
     players.forEach((player, i) => {
       const offset = i * perPlayer;
-      player.socket.emit("start", {
+      player.socket.emit("deal-pieces", {
         pieces: pieces.slice(offset, offset + perPlayer)
       });
     });
 
+    broadcastAll("start");
+
     reply({ pieces, perPlayer });
   });
 
-  socket.on("join-game", (data, reply) => {
-    let players = getPlayers();
-    gameId = data.gameId;
-    game = gamelist[data.gameId];
-    if (game && !game.started) {
-      game.connections.forEach(player => player.socket.emit("player-join"));
-      game.connections.push({ type: "player", socket });
+  socket.on("connect-match", (data, reply) => {
+    matchId = data.matchId;
+    match = matchList[matchId];
+    if (match) {
+      match.connections.push({ type: "spectator", socket });
+      const players = getPlayers();
       reply({ playerCount: players.length });
     } else {
-      reply({ error: "Could not join" });
+      reply({ error: "Match does not exist" });
+    }
+  });
+
+  socket.on("join-match", reply => {
+    if (match.started) {
+      reply({ error: "Match has already started" });
+    } else {
+      const conn = getConnection();
+      conn.type = "player";
+      broadcastAll("player-join");
+      reply("ok");
     }
   });
 
   socket.on("disconnect", () => {
-    if (!game) {
+    if (!match) {
       return;
     }
-    game.connections = game.connections.filter(p => p.socket !== socket);
-    game.connections.forEach(player => player.socket.emit("player-leave"));
+    const conn = getConnection();
+    match.connections = match.connections.filter(c => c !== conn);
+    if (conn.type === "player") {
+      broadcastAll("player-leave");
+    }
   });
 
   socket.on("send-piece", data => {
-    game.connections.forEach(player => player.socket.emit("send-piece", data));
+    broadcastAll("send-piece", data);
   });
 });
 

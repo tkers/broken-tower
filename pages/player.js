@@ -11,7 +11,7 @@ class PlayerPage extends React.Component {
   socket = null;
   state = {
     connected: false,
-    gameId: null,
+    matchId: null,
     started: false,
     playerCount: 0,
     pieces: []
@@ -37,9 +37,12 @@ class PlayerPage extends React.Component {
       this.setState({ playerCount: this.state.playerCount - 1 });
     });
 
-    this.socket.on("start", data => {
-      console.log("START GAME!");
-      this.setState({ started: true, pieces: data.pieces });
+    this.socket.on("deal-pieces", data => {
+      this.setState({ pieces: data.pieces });
+    });
+
+    this.socket.on("start", () => {
+      this.setState({ started: true });
     });
   }
 
@@ -59,18 +62,25 @@ class PlayerPage extends React.Component {
 
   joinGame() {
     const urlParams = new URLSearchParams(window.location.search);
-    const gameId = urlParams.get("gameId");
+    const matchId = urlParams.get("matchId");
 
-    this.socket.emit("join-game", { gameId }, data => {
+    this.socket.emit("connect-match", { matchId }, data => {
       if (data.error) {
         alert("Error: " + data.error);
         return;
       }
 
       this.setState({
-        gameId,
+        matchId,
         playerCount: data.playerCount,
         started: false
+      });
+
+      this.socket.emit("join-match", res => {
+        if (res.error) {
+          alert(res.error);
+          return;
+        }
       });
     });
   }
@@ -79,14 +89,14 @@ class PlayerPage extends React.Component {
     return this.state.connected ? (
       this.state.started ? (
         <PlayerStarted
-          gameId={this.state.gameId}
+          matchId={this.state.matchId}
           pieces={this.state.pieces}
           sendPiece={this.sendPiece}
           socket={this.socket}
         />
       ) : (
         <PlayerWaiting
-          gameId={this.state.gameId}
+          matchId={this.state.matchId}
           playerCount={this.state.playerCount}
           socket={this.socket}
         />

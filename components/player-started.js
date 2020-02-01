@@ -3,7 +3,7 @@ import Head from "next/head";
 import Nav from "./nav";
 import { Swipeable } from "react-swipeable";
 
-const PlayerStarted = ({ gameId, pieces, sendPiece }) => {
+const PlayerStarted = ({ matchId, pieces, sendPiece }) => {
   return (
     <Swipeable onSwipedUp={sendPiece}>
       <div className={"player-board"}>
@@ -17,9 +17,11 @@ const PlayerStarted = ({ gameId, pieces, sendPiece }) => {
         <div>
           Game started
           <br />
-          Game ID: {gameId}
+          Match ID: {matchId}
           <br />
           Pieces: {pieces.join(", ")}
+          <br />
+          <button onClick={sendPiece}>Send Piece</button>
         </div>
       </div>
       <style jsx>{`
