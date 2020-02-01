@@ -85,7 +85,7 @@ const useMatch = () => {
   const joinMatch = matchId => {
     socket.current.emit("connect-match", { matchId }, data => {
       if (data.error) {
-        alert("Error: " + data.error);
+        connsole.log(data.error);
         return;
       }
 
@@ -98,7 +98,7 @@ const useMatch = () => {
 
       socket.current.emit("join-match", res => {
         if (res.error) {
-          alert(res.error);
+          console.log(res.error);
         }
       });
     });
