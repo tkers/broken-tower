@@ -27,13 +27,19 @@ io.on("connection", socket => {
 
   socket.on("new-game", reply => {
     gameId = generateId(4);
-    game = { started: false, players: [], host: socket };
+    game = { started: false, connections: [{ type: "spectator", socket }] };
     gamelist[gameId] = game;
     reply({ gameId, ip, port });
   });
 
+  const getPlayers = () => {
+    return game.connections.filter(connection => connection.type === "player");
+  };
+
   socket.on("start-game", reply => {
-    if (game.players.length < 2) {
+    let players = getPlayers();
+
+    if (players.length < 2) {
       reply({ error: "Need at least 2 players to start" });
       return;
     }
@@ -43,11 +49,11 @@ io.on("connection", socket => {
     const pieces = Array.from({ length: 60 }, (v, k) => k + 1);
     shuffle(pieces);
     pieces.splice(30);
-    const perPlayer = Math.floor(pieces.length / game.players.length);
+    const perPlayer = Math.floor(pieces.length / players.length);
 
-    game.players.forEach((sock, i) => {
+    players.forEach((player, i) => {
       const offset = i * perPlayer;
-      sock.emit("start", {
+      player.socket.emit("start", {
         pieces: pieces.slice(offset, offset + perPlayer)
       });
     });
@@ -56,13 +62,13 @@ io.on("connection", socket => {
   });
 
   socket.on("join-game", (data, reply) => {
+    let players = getPlayers();
     gameId = data.gameId;
     game = gamelist[data.gameId];
     if (game && !game.started) {
-      game.players.forEach(sock => sock.emit("player-join"));
-      game.host.emit("player-join");
-      game.players.push(socket);
-      reply({ playerCount: game.players.length });
+      game.connections.forEach(player => player.socket.emit("player-join"));
+      game.connections.push({ type: "player", socket });
+      reply({ playerCount: players.length });
     } else {
       reply({ error: "Could not join" });
     }
@@ -72,20 +78,12 @@ io.on("connection", socket => {
     if (!game) {
       return;
     }
-
-    if (game.host === socket) {
-      game.players.forEach(sock => sock.emit("end"));
-      delete gamelist[gameId];
-    } else {
-      game.players = game.players.filter(p => p !== socket);
-      game.players.forEach(sock => sock.emit("player-leave"));
-      game.host.emit("player-leave");
-    }
+    game.connections = game.connections.filter(p => p.socket !== socket);
+    game.connections.forEach(player => player.socket.emit("player-leave"));
   });
 
   socket.on("send-piece", data => {
-    game.players.forEach(sock => sock.emit("send-piece", data));
-    game.host.emit("send-piece", data);
+    game.connections.forEach(player => player.socket.emit("send-piece", data));
   });
 });
 
