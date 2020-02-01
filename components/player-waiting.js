@@ -6,8 +6,8 @@ const PlayerWaiting = ({ matchId, playerCount }) => (
     <QRCode
       value={window.location.href}
       size={265}
-      bgColor="#ffffff"
-      fgColor="#ff5722"
+      bgColor="#ffe89e"
+      fgColor="#000000"
       includeMargin={true}
     />
     <div>

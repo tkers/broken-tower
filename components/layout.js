@@ -14,10 +14,10 @@ const Layout = ({ children }) => (
         font-family: -apple-system, BlinkMacSystemFont, Avenir Next, Avenir,
           Helvetica, sans-serif;
         font-size: 32px;
-        color: #ff5722;
+        color: #333333;
       }
       a {
-        color: #067df7;
+        color: #228877;
         text-decoration: none;
         font-size: 13px;
       }

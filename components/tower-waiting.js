@@ -20,8 +20,8 @@ const TowerWaiting = ({
           <QRCode
             value={url}
             size={512}
-            bgColor="#ffffff"
-            fgColor="#ff5722"
+            bgColor="#ffe89e"
+            fgColor="#000000"
             includeMargin={true}
           />
           {countdown && <h1 className="title">Starting in {countdown}...</h1>}
@@ -51,6 +51,10 @@ const TowerWaiting = ({
         .description {
           text-align: center;
         }
+        .title a {
+          color: #005599;
+          text-decoration: none;
+        }
         .row {
           max-width: 880px;
           margin: 80px auto 40px;
@@ -67,11 +71,11 @@ const TowerWaiting = ({
           border: 1px solid #9b9b9b;
         }
         .card:hover {
-          border-color: #067df7;
+          border-color: #228877;
         }
         .card h3 {
           margin: 0;
-          color: #067df7;
+          color: #228877;
           font-size: 18px;
         }
         .card p {
