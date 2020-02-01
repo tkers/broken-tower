@@ -15,7 +15,6 @@ const Layout = ({ children }) => (
           Helvetica, sans-serif;
         font-size: 32px;
         color: #ff5722;
-        overflow: hidden;
       }
       a {
         color: #067df7;
