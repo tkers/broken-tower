@@ -17,16 +17,10 @@ function getStack(n) {
 }
 
 function Piece(props) {
-  // This reference will give us direct access to the mesh
-  const mesh = useRef();
-
-  // Rotate mesh every frame, this is outside of React without overhead
-  // useFrame(() => (mesh.current.rotation.x = mesh.current.rotation.y += 0.01));
-
   return (
-    <mesh {...props} ref={mesh} scale={[props.width, 1, props.width]}>
+    <mesh position={props.position} scale={[props.width, 1, props.width]}>
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" color={"orange"} />
+      <meshStandardMaterial attach="material" color={props.color} />
     </mesh>
   );
 }
@@ -70,9 +64,14 @@ function Tower() {
     <Canvas style={{ height: 800, width: 800 }}>
       <Lookup />
       <ambientLight />
-      <pointLight position={[10, STACK_SIZE, 10]} />
-      {pieces.map((width, i) => (
-        <Piece key={width} position={[0, i, 0]} width={width} />
+      <pointLight position={[10, STACK_SIZE * 2, 10]} />
+      {pieces.map((width, i, array) => (
+        <Piece
+          key={width}
+          position={[0, i, 0]}
+          width={width}
+          color={i == array.length - 1 ? "red" : "orange"}
+        />
       ))}
     </Canvas>
   );
