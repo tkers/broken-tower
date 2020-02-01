@@ -5,7 +5,7 @@ import TowerWaiting from "../components/tower-waiting";
 import TowerStarted from "../components/tower-started";
 import TowerDisconnected from "../components/tower-disconnected";
 
-const Home = () => {
+const useMatch = () => {
   const [match, setMatch] = useState({ started: false, id: null });
   const [address, setAddress] = useState({ ip: null, port: null });
 
@@ -25,10 +25,6 @@ const Home = () => {
 
     sock.on("connect", () => {
       setConnected(true);
-      sock.emit("create-match", data => {
-        setMatch({ id: data.matchId, started: false });
-        setAddress({ ip: data.ip, port: data.port });
-      });
     });
 
     sock.on("disconnect", () => {
@@ -54,6 +50,13 @@ const Home = () => {
     };
   }, []);
 
+  const createMatch = () => {
+    socket.current.emit("create-match", data => {
+      setMatch({ id: data.matchId, started: false });
+      setAddress({ ip: data.ip, port: data.port });
+    });
+  };
+
   const startMatch = () => {
     socket.current.emit("start-match", data => {
       if (data.error) {
@@ -64,6 +67,34 @@ const Home = () => {
       }
     });
   };
+
+  return {
+    connected,
+    match,
+    createMatch,
+    startMatch,
+    playerCount,
+    pieces,
+    address
+  };
+};
+
+const Home = () => {
+  const {
+    connected,
+    createMatch,
+    startMatch,
+    match,
+    playerCount,
+    pieces,
+    address
+  } = useMatch();
+
+  useEffect(() => {
+    if (connected) {
+      createMatch();
+    }
+  }, [connected]);
 
   return connected ? (
     match.started ? (
