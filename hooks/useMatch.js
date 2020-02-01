@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer, useRef } from "react";
+import React, { useEffect, useState, useReducer } from "react";
 import useSocket from "../hooks/useSocket";
 
 const useMatch = () => {
@@ -95,7 +95,7 @@ const useMatch = () => {
   const joinMatch = matchId => {
     socket.current.emit("connect-match", { matchId }, data => {
       if (data.error) {
-        connsole.log(data.error);
+        console.log(data.error);
         return;
       }
 

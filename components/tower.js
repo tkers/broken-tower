@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Canvas, useFrame, useThree } from "react-three-fiber";
 
 function Piece(props) {
@@ -37,21 +37,34 @@ function Lookup({ stackSize }) {
 function Score({ last, wrong }) {
   return (
     <div className="container">
-      <p>Last piece</p>
-      <span className="score">{last}</span>
-      <p>wrong pieces</p>
-      <span className="score">{wrong}</span>
+      <table className="score">
+        <tr>
+          <th>Last Piece</th>
+          <th>Wrong Pieces</th>
+        </tr>
+        <tr>
+          <td>{ last }</td>
+          <td>{ wrong }</td>
+        </tr>
+      </table>
       <style jsx>{`
         .container {
-          margin-top: 50px;
-          color: darkOrange;
-
-          text-align: center;
-          width: 100px;
-          margin: 0 auto;
+          position: absolute;
+          bottom: 0;
+          width: 100vw;
+          right: 0;
         }
         .score {
-          font-size: 40px;
+          border-collapse: collapse;
+          font-size: 24px;
+          margin-top: 50px;
+          color: darkOrange;
+          text-align: center;
+          margin: 0 auto;
+        }
+        .container td, .container th {
+          border: 1px solid #ddd;
+          padding: 8px;
         }
       `}</style>
     </div>
@@ -79,13 +92,6 @@ const countWrongPieces = arr => {
 function Tower({ pieces, myPieces = [] }) {
   return (
     <>
-      {pieces.length > 0 && (
-        <Score
-          last={pieces[pieces.length - 1]}
-          wrong={countWrongPieces(pieces)}
-        />
-      )}
-
       <Canvas style={{ height: 500 }}>
         <Lookup stackSize={pieces.length + myPieces.length + 20} />
         <ambientLight />
@@ -100,7 +106,7 @@ function Tower({ pieces, myPieces = [] }) {
               key={width}
               position={[0, pieces.length + 20 + i, 0]}
               width={width}
-              color={i == 0 ? "#228877" : "#005599"}
+              color={i === 0 ? "#228877" : "#005599"}
             />
           ))}
 
@@ -112,7 +118,7 @@ function Tower({ pieces, myPieces = [] }) {
               color={
                 isBadPiece(array, i)
                   ? "#dd2244"
-                  : i == array.length - 1
+                  : i === array.length - 1
                   ? "#ddaa00"
                   : "#ab9a63"
               }
@@ -122,6 +128,12 @@ function Tower({ pieces, myPieces = [] }) {
           <Piece position={[0, -1, 0]} width={101} color={"#ab9a63"} />
         </group>
       </Canvas>
+      {pieces.length > 0 && (
+          <Score
+              last={pieces[pieces.length - 1]}
+              wrong={countWrongPieces(pieces)}
+          />
+      )}
     </>
   );
 }
