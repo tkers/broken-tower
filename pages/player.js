@@ -1,30 +1,7 @@
 import React from "react";
-import Head from "next/head";
-import Nav from "../components/nav";
 import io from "socket.io-client";
-
-const Player = ({ gameId, playerCount, started, pieces }) => (
-  <div>
-    <Head>
-      <title>Home</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-
-    <Nav />
-
-    <div>
-      player board
-      <br />
-      Game ID: {gameId}
-      <br />
-      Player Count:{playerCount}
-      <br />
-      {started ? "Started!" : "Waiting for other players..."}
-      <br />
-      Pieces: {pieces.join(", ")}
-    </div>
-  </div>
-);
+import PlayerWaiting from "../components/player-waiting";
+import PlayerStarted from "../components/player-started";
 
 class PlayerPage extends React.Component {
   // connect to WS server and listen event
@@ -78,12 +55,12 @@ class PlayerPage extends React.Component {
   };
 
   render() {
-    return (
-      <Player
+    return this.state.started ? (
+      <PlayerStarted gameId={this.state.gameId} pieces={this.state.pieces} />
+    ) : (
+      <PlayerWaiting
         gameId={this.state.gameId}
         playerCount={this.state.playerCount}
-        started={this.state.started}
-        pieces={this.state.pieces}
       />
     );
   }
