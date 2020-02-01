@@ -10,25 +10,28 @@ function Piece(props) {
   );
 }
 
-const STACK_SIZE = 20;
-
-function Lookup() {
+function Lookup({ stackSize }) {
   const { camera } = useThree();
 
   let [angle, setAngle] = useState(0);
 
   useFrame(() => {
-    let distance = 80;
+    let distance = 120;
 
     camera.position.x = distance * Math.cos(angle);
-    camera.position.y = 2 * STACK_SIZE;
+    camera.position.y = 4 * stackSize + 10;
     camera.position.z = distance * Math.sin(angle);
 
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(0, stackSize, 0);
     setAngle(angle + 0.005);
   });
 
-  return null;
+  return (
+    <pointLight
+      position={[camera.position.x, camera.position.y, camera.position.z]}
+      intensity={0.3}
+    />
+  );
 }
 
 function Score({ score }) {
@@ -59,11 +62,14 @@ function Tower({ pieces, myPieces = [] }) {
       {pieces.length > 0 && <Score score={pieces[pieces.length - 1]} />}
 
       <Canvas style={{ height: 500 }}>
-        <Lookup />
+        <Lookup stackSize={pieces.length + myPieces.length + 20} />
         <ambientLight />
-        <pointLight position={[10, STACK_SIZE * 5, 20]} />
+        <pointLight
+          position={[20, pieces.length + myPieces.length + 30, 30]}
+          intensity={0.8}
+        />
 
-        <group scale={[1, 1, 1]}>
+        <group scale={[1, 2.5, 1]}>
           {myPieces.map((width, i, array) => (
             <Piece
               key={width}

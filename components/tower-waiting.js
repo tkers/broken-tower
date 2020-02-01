@@ -28,9 +28,9 @@ const TowerWaiting = ({
         </p>
 
         <div className="row">
-          <a href="#" onClick={onStart} className="card">
-            <h3>Start Game!</h3>
-            <p>{playerCount} players waiting</p>
+          <a href="#" onClick={playerCount >= 2 && onStart} className="card">
+            <h3>{playerCount >= 2 ? "Start Game!" : "Waiting for players"}</h3>
+            <p>{playerCount} players connected</p>
           </a>
         </div>
       </div>
