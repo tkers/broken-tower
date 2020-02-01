@@ -14,16 +14,15 @@ const nextHandler = nextApp.getRequestHandler();
 const addr = dev ? "0.0.0.0" : "127.0.0.1";
 const port = 3000;
 
-// fake DB
-const gamelist = {};
-
 // pass the IP to client for easy development
 const ip = getAddresses();
 
+// list of the active games
+const gamelist = {};
+
 // socket.io server
 io.on("connection", socket => {
-  console.log("New socket connection");
-
+  // keep track of the game/id the client is connected to
   let game, gameId;
 
   socket.on("new-game", reply => {
@@ -70,7 +69,14 @@ io.on("connection", socket => {
   });
 
   socket.on("disconnect", () => {
-    if (game) {
+    if (!game) {
+      return;
+    }
+
+    if (game.host === socket) {
+      game.players.forEach(sock => sock.emit("end"));
+      delete gamelist[gameId];
+    } else {
       game.players = game.players.filter(p => p !== socket);
       game.players.forEach(sock => sock.emit("player-leave"));
       game.host.emit("player-leave");
@@ -81,15 +87,9 @@ io.on("connection", socket => {
     console.log("received piece", data)
     game.players.forEach(sock => sock.emit("send-piece", data));
   });
-
-  socket.emit("message", "Welcome!");
 });
 
 nextApp.prepare().then(() => {
-  app.get("/messages", (req, res) => {
-    res.json(messages);
-  });
-
   app.get("*", (req, res) => {
     return nextHandler(req, res);
   });

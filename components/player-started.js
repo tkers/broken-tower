@@ -3,20 +3,10 @@ import Head from "next/head";
 import Nav from "./nav";
 import {Swipeable} from "react-swipeable";
 
-const PlayerStarted = ({gameId, pieces, socket}) => {
-
-    const swipedUp = (e, deltaY, isFlick) => {
-        const {pieces} = this.state
-        console.log("You Swiped Up...", e, deltaY, isFlick)
-        if (pieces.length) {
-            const biggerPiece = Math.max(...pieces)
-            this.socket.emit("send-piece", biggerPiece)
-            this.setState({pieces: pieces.filter(p => p !== biggerPiece)})
-        }
-    }
+const PlayerStarted = ({gameId, pieces, sendPiece}) => {
 
     return <Swipeable
-        onSwipedUp={swipedUp}>
+        onSwipedUp={sendPiece}>
         <div className={'player-board'}><Head>
             <title>Player</title>
             <link rel="icon" href="/favicon.ico"/>

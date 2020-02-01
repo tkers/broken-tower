@@ -3,7 +3,14 @@ import Head from "next/head";
 import Nav from "../components/nav";
 import QRCode from "qrcode.react";
 
-const TowerWaiting = ({ gameId, playerCount, onStart, ip, port }) => (
+const TowerWaiting = ({
+  gameId,
+  playerCount,
+  onStart,
+  ip,
+  port,
+  countdown
+}) => (
   <div>
     <Head>
       <title>Home</title>
@@ -22,6 +29,7 @@ const TowerWaiting = ({ gameId, playerCount, onStart, ip, port }) => (
           fgColor="#000000"
           includeMargin={true}
         />
+        {countdown && <h1 className="title">Starting in {countdown}...</h1>}
       </p>
 
       <div className="row">
