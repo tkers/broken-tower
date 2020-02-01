@@ -4,33 +4,37 @@ import Tower from "./tower";
 import { Swipeable } from "react-swipeable";
 
 const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
-  // myPieces = [40, 23, 12, 5];
-  // pieces = [60, 50, 45];
   return (
     <Swipeable onSwipedUp={() => {}}>
       <div className="wrapper">
         <div>
-          My Pieces: {myPieces.join(", ")}
+            <div>My Pieces:</div> {myPieces.join(", ")}
           <br />
-          <button onClick={sendPiece} className="bigButton">
-            Send Piece
-          </button>
+            {myPieces.length && <button onClick={sendPiece} className="bigButton">
+                Send Piece
+            </button>
+            }
         </div>
         <Tower pieces={pieces} myPieces={myPieces} />
       </div>
       <style jsx>{`
         .wrapper {
+          font-size: 18px;
           max-width: 600px;
-          margin: 50px auto 0;
+          margin: 0 auto 0;
           padding: 50px;
           text-align: center;
         }
         .bigButton {
-          background-color: #00aa44;
-          padding: 16px 32px;
-          display: block;
-          margin: 0 auto;
-          border: none;
+            background-color: #00aa44;
+            color: whitesmoke;
+            box-shadow: 0px 0px 3px #00000052;
+            border-radius: 3px;
+            padding: 16px 32px;
+            display: block;
+            margin: 15px auto;
+            border: none;
+            font-size: 24px;
         }
       `}</style>
     </Swipeable>
