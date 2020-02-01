@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "react-three-fiber";
 
-const range = i => new Array(i + 1).fill(0).map((_, i) => i);
+const range = (a, b) => new Array(b - a + 1).fill(0).map((_, i) => a + i);
 
 function shuffle(a) {
   for (let i = a.length - 1; i > 0; i--) {
@@ -11,7 +11,7 @@ function shuffle(a) {
   return a;
 }
 function getStack(n) {
-  return shuffle(range(n * 2))
+  return shuffle(range(1, n * 2 + 1))
     .slice(0, Math.floor(n))
     .sort((x, y) => y - x);
 }
