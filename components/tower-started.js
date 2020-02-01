@@ -2,12 +2,37 @@ import React from "react";
 
 import Tower from "./tower";
 
+function LastPiece({ pieces }) {
+  const last = pieces.length > 0 ? pieces[pieces.length - 1] : undefined;
+  return (
+    <div className="container">
+      <p>Last piece</p>
+      <span className="score">{last}</span>
+      <style jsx>{`
+        .container {
+          margin-top: 50px;
+          color: darkOrange;
+
+          text-align: center;
+          width: 100px;
+          margin: 0 auto;
+        }
+        .score {
+          font-size: 40px;
+        }
+      `}</style>
+    </div>
+  );
+}
+
 const TowerStarted = ({ remainingPieces, pieces }) => {
   return (
     <div>
       <div className="hero">
         <p className="description">{remainingPieces} pieces remaining</p>
       </div>
+
+      <LastPiece pieces={pieces} />
 
       <Tower pieces={pieces} />
 

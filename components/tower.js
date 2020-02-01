@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "react-three-fiber";
 
+import { isBadPiece } from "./rating";
+
 function Piece(props) {
   return (
     <mesh position={props.position} scale={[props.width, 1, props.width]}>
@@ -34,58 +36,9 @@ function Lookup({ stackSize }) {
   );
 }
 
-function Score({ last, wrong }) {
-  return (
-    <div className="container">
-      <p>Last piece</p>
-      <span className="score">{last}</span>
-      <p>wrong pieces</p>
-      <span className="score">{wrong}</span>
-      <style jsx>{`
-        .container {
-          margin-top: 50px;
-          color: darkOrange;
-
-          text-align: center;
-          width: 100px;
-          margin: 0 auto;
-        }
-        .score {
-          font-size: 40px;
-        }
-      `}</style>
-    </div>
-  );
-}
-
-const isBadPiece = (arr, i) => {
-  if (i === 0) return false;
-  for (let k = i - 1; k >= 0; k--) {
-    if (arr[i] > arr[k]) {
-      return true;
-    }
-  }
-  return false;
-};
-
-const countWrongPieces = arr => {
-  let n = 0;
-  arr.forEach((width, i, array) => {
-    if (isBadPiece(array, i)) n++;
-  });
-  return n;
-};
-
 function Tower({ pieces, myPieces = [] }) {
   return (
     <>
-      {pieces.length > 0 && (
-        <Score
-          last={pieces[pieces.length - 1]}
-          wrong={countWrongPieces(pieces)}
-        />
-      )}
-
       <Canvas style={{ height: 500 }}>
         <Lookup stackSize={pieces.length + myPieces.length + 20} />
         <ambientLight />
