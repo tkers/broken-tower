@@ -46,6 +46,28 @@ function Lookup() {
   return null;
 }
 
+function Score({ score }) {
+  return (
+    <div className="container">
+      <p>Last piece</p>
+      <span className="score">{score}</span>
+      <style jsx>{`
+        .container {
+          margin-top: 50px;
+          color: darkOrange;
+
+          text-align: center;
+          width: 100px;
+          margin: 0 auto;
+        }
+        .score {
+          font-size: 40px;
+        }
+      `}</style>
+    </div>
+  );
+}
+
 let stack = getStack(20);
 
 function Tower() {
@@ -61,19 +83,24 @@ function Tower() {
   }, [pieces]);
 
   return (
-    <Canvas style={{ height: 800, width: 800 }}>
-      <Lookup />
-      <ambientLight />
-      <pointLight position={[10, STACK_SIZE * 2, 10]} />
-      {pieces.map((width, i, array) => (
-        <Piece
-          key={width}
-          position={[0, i, 0]}
-          width={width}
-          color={i == array.length - 1 ? "red" : "orange"}
-        />
-      ))}
-    </Canvas>
+    <>
+      {pieces.length > 0 && <Score score={pieces[pieces.length - 1]} />}
+
+      <Canvas style={{ height: 800, width: 800 }}>
+        <Lookup />
+        <ambientLight />
+        <pointLight position={[10, STACK_SIZE * 2, 10]} />
+
+        {pieces.map((width, i, array) => (
+          <Piece
+            key={width}
+            position={[0, i, 0]}
+            width={width}
+            color={i == array.length - 1 ? "red" : "orange"}
+          />
+        ))}
+      </Canvas>
+    </>
   );
 }
 
