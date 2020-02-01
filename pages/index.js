@@ -7,6 +7,7 @@ import useCountdown from "../hooks/useCountdown";
 import Layout from "../components/layout";
 import TowerWaiting from "../components/tower-waiting";
 import TowerStarted from "../components/tower-started";
+import TowerFinished from "../components/tower-finished";
 import TowerDisconnected from "../components/tower-disconnected";
 
 const Home = () => {
@@ -41,12 +42,20 @@ const Home = () => {
     <Layout>
       {connected ? (
         match.started ? (
-          <TowerStarted
-            matchId={match.id}
-            playerCount={playerCount}
-            pieces={pieces}
-            remainingPieces={remainingPieces}
-          />
+          remainingPieces > 0 ? (
+            <TowerStarted
+              matchId={match.id}
+              playerCount={playerCount}
+              pieces={pieces}
+              remainingPieces={remainingPieces}
+            />
+          ) : (
+            <TowerFinished
+              matchId={match.id}
+              playerCount={playerCount}
+              pieces={pieces}
+            />
+          )
         ) : (
           <TowerWaiting
             matchId={match.id}

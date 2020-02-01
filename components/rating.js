@@ -15,3 +15,9 @@ export const countWrongPieces = pieces => {
   });
   return n;
 };
+
+export const getScore = pieces => {
+  const total = pieces.length;
+  const ok = total - countWrongPieces(pieces);
+  return Math.floor((ok * 100) / total);
+};

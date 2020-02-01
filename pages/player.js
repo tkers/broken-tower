@@ -7,6 +7,7 @@ import Layout from "../components/layout";
 
 import PlayerWaiting from "../components/player-waiting";
 import PlayerStarted from "../components/player-started";
+import PlayerFinished from "../components/player-finished";
 import PlayerDisconnected from "../components/player-disconnected";
 
 const PlayerPage = () => {
@@ -17,7 +18,8 @@ const PlayerPage = () => {
     playerCount,
     pieces, // The Pieces on the tower
     myPieces, // The pieces that you hold
-    sendPiece
+    sendPiece,
+    remainingPieces
   } = useMatch();
 
   const router = useRouter();
@@ -32,12 +34,17 @@ const PlayerPage = () => {
     <Layout>
       {connected ? (
         match.started ? (
-          <PlayerStarted
-            matchId={match.id}
-            pieces={pieces}
-            myPieces={myPieces}
-            sendPiece={sendPiece}
-          />
+          remainingPieces > 0 ? (
+            <PlayerStarted
+              matchId={match.id}
+              pieces={pieces}
+              myPieces={myPieces}
+              sendPiece={sendPiece}
+              remainingPieces={remainingPieces}
+            />
+          ) : (
+            <PlayerFinished matchId={match.id} pieces={pieces} />
+          )
         ) : (
           <PlayerWaiting matchId={match.id} playerCount={playerCount} />
         )
