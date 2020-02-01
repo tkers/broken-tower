@@ -78,6 +78,7 @@ io.on("connection", socket => {
   });
 
   socket.on("send-piece", data => {
+    console.log("received piece", data)
     game.players.forEach(sock => sock.emit("send-piece", data));
   });
 
