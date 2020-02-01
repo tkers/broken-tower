@@ -2,7 +2,9 @@ import React from "react";
 import Head from "next/head";
 import Nav from "./nav";
 
-const PlayerStarted = ({ gameId, pieces }) => (
+// socket.emit("send-piece", { piece: "piece" });
+
+const PlayerStarted = ({ gameId, pieces, socket }) => (
   <div>
     <Head>
       <title>Player</title>

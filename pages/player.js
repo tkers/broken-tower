@@ -12,8 +12,6 @@ class PlayerPage extends React.Component {
     this.socket = io();
     this.socket.on("message", this.handleMessage);
     this.socket.on("connect", () => {
-      // this.socket.emit("send-piece", { piece: "piece" });
-
       const urlParams = new URLSearchParams(window.location.search);
       const gameId = urlParams.get("gameId");
       this.socket.emit("join-game", { gameId }, data => {
@@ -56,11 +54,16 @@ class PlayerPage extends React.Component {
 
   render() {
     return this.state.started ? (
-      <PlayerStarted gameId={this.state.gameId} pieces={this.state.pieces} />
+      <PlayerStarted
+        gameId={this.state.gameId}
+        pieces={this.state.pieces}
+        socket={this.socket}
+      />
     ) : (
       <PlayerWaiting
         gameId={this.state.gameId}
         playerCount={this.state.playerCount}
+        socket={this.socket}
       />
     );
   }
