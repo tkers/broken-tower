@@ -57,7 +57,7 @@ io.on("connection", socket => {
 
     const pieces = Array.from({ length: 100 }, (v, k) => k + 1);
     shuffle(pieces);
-    pieces.splice(75);
+    pieces.splice(25);
     const perPlayer = Math.floor(pieces.length / players.length);
 
     players.forEach((player, i) => {
