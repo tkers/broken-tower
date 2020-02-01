@@ -58,11 +58,20 @@ function Score({ last, wrong }) {
   );
 }
 
-const getWrongPieces = arr => {
+const isBadPiece = (arr, i) => {
+  if (i === 0) return false;
+  for (let k = i - 1; k >= 0; k--) {
+    if (arr[i] > arr[k]) {
+      return true;
+    }
+  }
+  return false;
+};
+
+const countWrongPieces = arr => {
   let n = 0;
   arr.forEach((width, i, array) => {
-    const bad = i !== 0 && array[i] > array[i - 1];
-    if (bad) n++;
+    if (isBadPiece(array, i)) n++;
   });
   return n;
 };
@@ -73,7 +82,7 @@ function Tower({ pieces, myPieces = [] }) {
       {pieces.length > 0 && (
         <Score
           last={pieces[pieces.length - 1]}
-          wrong={getWrongPieces(pieces)}
+          wrong={countWrongPieces(pieces)}
         />
       )}
 
@@ -95,23 +104,20 @@ function Tower({ pieces, myPieces = [] }) {
             />
           ))}
 
-          {pieces.map((width, i, array) => {
-            const bad = i !== 0 && array[i] > array[i - 1];
-            return (
-              <Piece
-                key={width}
-                position={[0, i, 0]}
-                width={width}
-                color={
-                  bad
-                    ? "#dd2244"
-                    : i == array.length - 1
-                    ? "#ddaa00"
-                    : "#ab9a63"
-                }
-              />
-            );
-          })}
+          {pieces.map((width, i, array) => (
+            <Piece
+              key={width}
+              position={[0, i, 0]}
+              width={width}
+              color={
+                isBadPiece(array, i)
+                  ? "#dd2244"
+                  : i == array.length - 1
+                  ? "#ddaa00"
+                  : "#ab9a63"
+              }
+            />
+          ))}
 
           <Piece position={[0, -1, 0]} width={101} color={"#ab9a63"} />
         </group>
