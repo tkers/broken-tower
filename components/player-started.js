@@ -1,5 +1,6 @@
 import React from "react";
 
+import Score from "./score";
 import Tower from "./tower";
 import { Swipeable } from "react-swipeable";
 
@@ -17,6 +18,7 @@ const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
           )}
         </div>
         <Tower pieces={pieces} myPieces={myPieces} />
+        {pieces.length > 0 && <Score pieces={pieces} />}
       </div>
       <style jsx>{`
         .wrapper {
