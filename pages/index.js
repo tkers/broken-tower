@@ -7,7 +7,7 @@ import TowerDisconnected from "../components/tower-disconnected";
 
 class Home extends React.Component {
   // connect to WS server and listen event
-  state = { connected: false, started: false, gameId: null };
+  state = { connected: false, started: false, gameId: null, pieces: [] };
 
   componentDidMount() {
     this.socket = io();
@@ -83,16 +83,24 @@ class Home extends React.Component {
   };
 
   receivePiece = piece => {
-    console.log("Received piece:", piece);
+    console.log("received", piece);
+    this.setState(state => {
+      console.log({ state });
+      return {
+        pieces: [...state.pieces, piece]
+      };
+    });
   };
 
   render() {
+    console.log(this.state);
     return this.state.connected ? (
       this.state.started ? (
         <TowerStarted
           gameId={this.state.gameId}
           playerCount={this.state.playerCount}
           socket={this.socket}
+          pieces={this.state.pieces}
         />
       ) : (
         <TowerWaiting
