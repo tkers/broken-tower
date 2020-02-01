@@ -86,15 +86,9 @@ io.on("connection", socket => {
   socket.on("send-piece", data => {
     game.players.forEach(sock => sock.emit("send-piece", data));
   });
-
-  socket.emit("message", "Welcome!");
 });
 
 nextApp.prepare().then(() => {
-  app.get("/messages", (req, res) => {
-    res.json(messages);
-  });
-
   app.get("*", (req, res) => {
     return nextHandler(req, res);
   });
