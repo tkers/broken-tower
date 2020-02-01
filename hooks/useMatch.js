@@ -12,10 +12,7 @@ const useMatch = () => {
     (total, delta) => total + delta,
     0
   );
-  const [pieces, addPiece] = useReducer(
-    (pieces, newPiece) => [...pieces, newPiece],
-    []
-  );
+  const [pieces, setPiece] = useState([]);
   const [myPieces, setMyPieces] = useState([]);
 
   const [remainingPieces, addRemainingPieces] = useReducer(
@@ -26,15 +23,17 @@ const useMatch = () => {
   const { socket, connected } = useSocket();
 
   const onPlayerJoin = () => {
+    console.log("player joined")
     addPlayerCount(1);
   };
 
   const onPlayerLeave = () => {
+    console.log("player left")
     addPlayerCount(-1);
   };
 
   const onSendPiece = size => {
-    addPiece(size);
+    setPiece(pieces =>[...pieces, size]);
     addRemainingPieces(-1);
   };
 
@@ -45,8 +44,16 @@ const useMatch = () => {
   };
 
   const onMatchStarted = data => {
+    console.log("match started")
     setMatch({ ...match, started: true });
     addRemainingPieces(data.piecesCount);
+  };
+
+  const onMatchRestarted = data => {
+    console.log("match re-started")
+    setMatch({ ...match, started: true });
+    setPiece([])
+    addRemainingPieces(-remainingPieces + data.piecesCount);
   };
 
   useEffect(() => {
@@ -59,6 +66,7 @@ const useMatch = () => {
     socket.current.on("send-piece", onSendPiece);
     socket.current.on("deal-pieces", onDealPieces);
     socket.current.on("start", onMatchStarted);
+    socket.current.on("restart", onMatchRestarted);
 
     return () => {
       if (!socket.current) {
@@ -70,6 +78,7 @@ const useMatch = () => {
       socket.current.removeListener("send-piece", onSendPiece);
       socket.current.removeListener("deal-pieces", onDealPieces);
       socket.current.removeListener("start", onMatchStarted);
+      socket.current.removeListener("restart", onMatchRestarted);
     };
   }, [socket.current]);
 
@@ -82,6 +91,11 @@ const useMatch = () => {
 
   const startMatch = () => {
     socket.current.emit("start-match");
+  };
+
+  const restartMatch = () => {
+    console.log("emit restart match")
+    socket.current.emit("restart-match");
   };
 
   const sendPiece = () => {
@@ -119,6 +133,7 @@ const useMatch = () => {
     match,
     createMatch,
     startMatch,
+    restartMatch,
     playerCount,
     joinMatch,
     sendPiece,

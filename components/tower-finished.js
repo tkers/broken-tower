@@ -3,11 +3,12 @@ import React from "react";
 import Tower from "./tower";
 import { getScore } from "./rating";
 
-const TowerFinished = ({ pieces }) => {
+const TowerFinished = ({ pieces, restartMatch }) => {
   return (
     <div>
       <div className="hero">
         <p className="description">Final Score: {getScore(pieces)}</p>
+          <button className="bigButton" onClick={restartMatch}>Play again?</button>
       </div>
 
       <Tower pieces={pieces} />
@@ -49,6 +50,17 @@ const TowerFinished = ({ pieces }) => {
           padding: 12px 0 0;
           font-size: 13px;
           color: #333;
+        }
+        .bigButton {
+          background-color: #00aa44;
+          color: whitesmoke;
+          box-shadow: 0px 0px 3px #00000052;
+          border-radius: 3px;
+          padding: 16px 32px;
+          display: block;
+          margin: 15px auto;
+          border: none;
+          font-size: 24px;
         }
       `}</style>
     </div>

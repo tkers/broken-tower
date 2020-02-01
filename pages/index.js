@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import io from "socket.io-client";
 
 import useMatch from "../hooks/useMatch";
 import useCountdown from "../hooks/useCountdown";
@@ -15,6 +14,7 @@ const Home = () => {
     connected,
     createMatch,
     startMatch,
+    restartMatch,
     match,
     playerCount,
     pieces,
@@ -59,6 +59,7 @@ const Home = () => {
               matchId={match.id}
               playerCount={playerCount}
               pieces={pieces}
+              restartMatch={restartMatch}
             />
           )
         ) : (

@@ -1,22 +1,26 @@
 import React from "react";
-import { countWrongPieces } from "./rating";
+import {countWrongPieces} from "./rating";
 
 function Score({ pieces }) {
-  const last = pieces.length > 0 ? pieces[pieces.length - 1] : undefined;
-  const wrong = countWrongPieces(pieces);
-  return (
-    <div className="container">
-      <table className="score">
-        <tr>
-          <th>Last Piece</th>
-          <th>Wrong Pieces</th>
-        </tr>
-        <tr>
-          <td>{last}</td>
-          <td>{wrong}</td>
-        </tr>
-      </table>
-      <style jsx>{`
+    const last = pieces.length > 0 ? pieces[pieces.length - 1] : undefined;
+    const wrong = countWrongPieces(pieces);
+    return (
+        <div className="container">
+            <table className="score">
+                <thead>
+                <tr>
+                    <th>Last Piece</th>
+                    <th>Wrong Pieces</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{last}</td>
+                    <td>{wrong}</td>
+                </tr>
+                </tbody>
+            </table>
+            <style jsx>{`
         .container {
           position: absolute;
           bottom: 0;
@@ -37,8 +41,8 @@ function Score({ pieces }) {
           padding: 8px;
         }
       `}</style>
-    </div>
-  );
+        </div>
+    );
 }
 
 export default Score;

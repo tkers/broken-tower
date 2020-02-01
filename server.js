@@ -46,6 +46,7 @@ io.on("connection", socket => {
   });
 
   socket.on("start-match", () => {
+    console.log("start match!!")
     let players = getPlayers();
 
     if (players.length < 2) {
@@ -73,6 +74,25 @@ io.on("connection", socket => {
     });
 
     broadcastAll("start", { piecesCount: players.length * perPlayer });
+  });
+
+  socket.on("restart-match", () => {
+    console.log("restart match!!")
+    let players = getPlayers();
+
+    const pieces = Array.from({ length: 100 }, (v, k) => k + 1);
+    shuffle(pieces);
+    pieces.splice(25);
+    const perPlayer = Math.floor(pieces.length / players.length);
+
+    players.forEach((player, i) => {
+      const offset = i * perPlayer;
+      player.socket.emit("deal-pieces", {
+        pieces: pieces.slice(offset, offset + perPlayer)
+      });
+    });
+
+    broadcastAll("restart", { piecesCount: players.length * perPlayer });
   });
 
   socket.on("connect-match", (data, reply) => {
