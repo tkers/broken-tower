@@ -47,7 +47,10 @@ io.on("connection", socket => {
     const perPlayer = Math.floor(pieces.length / game.players.length);
 
     game.players.forEach((sock, i) => {
-      sock.emit("start", { pieces: pieces.slice(i, i + perPlayer) });
+      const offset = i * perPlayer;
+      sock.emit("start", {
+        pieces: pieces.slice(offset, offset + perPlayer)
+      });
     });
 
     reply({ pieces, perPlayer });
