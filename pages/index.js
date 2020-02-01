@@ -2,8 +2,9 @@ import React from "react";
 import Head from "next/head";
 import Nav from "../components/nav";
 import io from "socket.io-client";
+import QRCode from "qrcode.react";
 
-const DemoHome = ({ gameId }) => (
+const DemoHome = ({ gameId, ip, port }) => (
   <div>
     <Head>
       <title>Home</title>
@@ -14,7 +15,15 @@ const DemoHome = ({ gameId }) => (
 
     <div className="hero">
       <h1 className="title">{gameId}</h1>
-      <p className="description">Game created!</p>
+      <p className="description">
+        <QRCode
+          value={`http://${ip}:${port}/player?gameId=${gameId}`}
+          size={512}
+          bgColor="#FFFF00"
+          fgColor="#000000"
+          includeMargin={true}
+        />
+      </p>
 
       <div className="row">
         <a href="https://nextjs.org/docs" className="card">
@@ -93,7 +102,7 @@ class Home extends React.Component {
     this.socket.on("connect", () => {
       this.socket.emit("new-game", data => {
         const gameId = data.gameId;
-        this.setState({ gameId });
+        this.setState({ gameId, ip: data.ip, port: data.port });
       });
 
       const tryStart = () => {
@@ -123,7 +132,13 @@ class Home extends React.Component {
   };
 
   render() {
-    return <DemoHome gameId={this.state.gameId} />;
+    return (
+      <DemoHome
+        gameId={this.state.gameId}
+        ip={this.state.ip}
+        port={this.state.port}
+      />
+    );
   }
 }
 
