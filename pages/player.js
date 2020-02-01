@@ -1,11 +1,14 @@
 import React from "react";
 import io from "socket.io-client";
+
 import PlayerWaiting from "../components/player-waiting";
 import PlayerStarted from "../components/player-started";
+import PlayerDisconnected from "../components/player-disconnected";
 
 class PlayerPage extends React.Component {
-    // connect to WS server and listen event
+  // connect to WS server and listen event
 
+  socket = null;
   state = {
     connected: false,
     gameId: null,
@@ -16,24 +19,10 @@ class PlayerPage extends React.Component {
 
   componentDidMount() {
     this.socket = io();
-    this.socket.on("message", this.handleMessage);
+
     this.socket.on("connect", () => {
       this.setState({ connected: true });
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const gameId = urlParams.get("gameId");
-      this.socket.emit("join-game", { gameId }, data => {
-        if (data.error) {
-          alert("Error: " + data.error);
-          return;
-        }
-
-        this.setState({
-          gameId,
-          playerCount: data.playerCount,
-          started: false
-        });
-      });
+      this.joinGame();
     });
 
     this.socket.on("disconnect", () => {
@@ -43,6 +32,7 @@ class PlayerPage extends React.Component {
     this.socket.on("player-join", () => {
       this.setState({ playerCount: this.state.playerCount + 1 });
     });
+
     this.socket.on("player-leave", () => {
       this.setState({ playerCount: this.state.playerCount - 1 });
     });
@@ -55,23 +45,35 @@ class PlayerPage extends React.Component {
 
   // close socket connection
   componentWillUnmount() {
-    this.socket.off("message", this.handleMessage);
     this.socket.close();
   }
 
   sendPiece = (e, deltaY, isFlick) => {
-    const { pieces } = this.state
+    const { pieces } = this.state;
     if (pieces.length) {
-      const biggerPiece = Math.max(...pieces)
-      this.socket.emit("send-piece", biggerPiece)
-      this.setState({pieces: pieces.filter(p => p !== biggerPiece)})
+      const biggerPiece = Math.max(...pieces);
+      this.socket.emit("send-piece", biggerPiece);
+      this.setState({ pieces: pieces.filter(p => p !== biggerPiece) });
     }
-  }
-
-  // add messages from server to the state
-  handleMessage = message => {
-    console.log("message:", message);
   };
+
+  joinGame() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameId = urlParams.get("gameId");
+
+    this.socket.emit("join-game", { gameId }, data => {
+      if (data.error) {
+        alert("Error: " + data.error);
+        return;
+      }
+
+      this.setState({
+        gameId,
+        playerCount: data.playerCount,
+        started: false
+      });
+    });
+  }
 
   render() {
     return this.state.connected ? (
@@ -90,11 +92,7 @@ class PlayerPage extends React.Component {
         />
       )
     ) : (
-      <div>
-        Disconnected :(
-        <br />
-        <a href="/">Refresh</a>
-      </div>
+      <PlayerDisconnected />
     );
   }
 }

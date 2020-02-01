@@ -1,7 +1,9 @@
 import React from "react";
 import io from "socket.io-client";
+
 import TowerWaiting from "../components/tower-waiting";
 import TowerStarted from "../components/tower-started";
+import TowerDisconnected from "../components/tower-disconnected";
 
 class Home extends React.Component {
   // connect to WS server and listen event
@@ -96,11 +98,7 @@ class Home extends React.Component {
         />
       )
     ) : (
-      <div>
-        Disconnected :(
-        <br />
-        <a href="/">Refresh</a>
-      </div>
+      <TowerDisconnected />
     );
   }
 }
