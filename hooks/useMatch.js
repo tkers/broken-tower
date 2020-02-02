@@ -27,8 +27,11 @@ const useMatch = () => {
     addPlayerCount(1);
   };
 
-  const onPlayerLeave = () => {
+  const onPlayerLeave = data => {
     addPlayerCount(-1);
+    if (data.droppedPiecesCount) {
+      addRemainingPieces(-data.droppedPiecesCount);
+    }
   };
 
   const onSendPiece = piece => {

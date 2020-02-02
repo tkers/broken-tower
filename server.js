@@ -65,44 +65,39 @@ io.on("connection", socket => {
     reply({ matchId, ip, port });
   });
 
-  socket.on("start-match", () => {
-    let players = getPlayers();
+  const prepareMatch = () => {
+    const players = getPlayers();
 
     if (players.length < 2) {
       // reply({ error: "Need at least 2 players to start" });
       return;
     }
 
-    if (match.started) {
-      // can not start again
-      return;
-    }
-
-    match.started = true;
-
     const { hands, total, allPieces } = dealPieces(players.length);
 
     match.allPieces = allPieces;
 
     players.forEach((player, i) => {
+      player.pieces = hands[i];
       player.socket.emit("deal-pieces", { pieces: hands[i] });
     });
 
-    broadcastAll("start", { piecesCount: total });
+    return total;
+  };
+
+  socket.on("start-match", () => {
+    if (match.started) {
+      return;
+    }
+    match.started = true;
+
+    const piecesCount = prepareMatch();
+    broadcastAll("start", { piecesCount });
   });
 
   socket.on("restart-match", () => {
-    let players = getPlayers();
-
-    const { hands, total, allPieces } = dealPieces(players.length);
-
-    match.allPieces = allPieces;
-
-    players.forEach((player, i) => {
-      player.socket.emit("deal-pieces", { pieces: hands[i] });
-    });
-
-    broadcastAll("restart", { piecesCount: total });
+    const piecesCount = prepareMatch();
+    broadcastAll("restart", { piecesCount });
   });
 
   socket.on("connect-match", (data, reply) => {
@@ -135,14 +130,21 @@ io.on("connection", socket => {
     const conn = getConnection();
     match.connections = match.connections.filter(c => c !== conn);
     if (conn.type === "player") {
-      broadcastAll("player-leave");
+      match.allPieces = match.allPieces.filter(
+        p => conn.pieces.indexOf(p) === -1
+      );
+      broadcastAll("player-leave", { droppedPiecesCount: conn.pieces.length });
     }
   });
 
   socket.on("send-piece", size => {
     const max = Math.max(...match.allPieces);
     const stable = size === max;
+
+    const conn = getConnection();
     match.allPieces = match.allPieces.filter(p => p !== size);
+    conn.pieces = conn.pieces.filter(p => p !== size);
+
     broadcastAll("send-piece", { size, stable });
   });
 });
