@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Canvas, useFrame, useThree } from "react-three-fiber";
 
-import { isBadPiece } from "./rating";
-
 function Piece(props) {
   return (
     <mesh position={props.position} scale={[props.width, 1, props.width]}>
@@ -57,13 +55,13 @@ function Tower({ pieces, myPieces = [] }) {
             />
           ))}
 
-          {pieces.map((width, i, array) => (
+          {pieces.map((piece, i, array) => (
             <Piece
-              key={width}
+              key={piece.size}
               position={[0, i, 0]}
-              width={width}
+              width={piece.size}
               color={
-                isBadPiece(array, i)
+                !piece.stable
                   ? "#dd2244"
                   : i === array.length - 1
                   ? "#ddaa00"

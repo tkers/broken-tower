@@ -30,8 +30,8 @@ const useMatch = () => {
     addPlayerCount(-1);
   };
 
-  const onSendPiece = size => {
-    setPiece(pieces => [...pieces, size]);
+  const onSendPiece = piece => {
+    setPiece(pieces => [...pieces, piece]);
     addRemainingPieces(-1);
   };
 

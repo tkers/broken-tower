@@ -140,8 +140,10 @@ io.on("connection", socket => {
   });
 
   socket.on("send-piece", size => {
+    const max = Math.max(...match.allPieces);
+    const stable = size === max;
     match.allPieces = match.allPieces.filter(p => p !== size);
-    broadcastAll("send-piece", size);
+    broadcastAll("send-piece", { size, stable });
   });
 });
 
