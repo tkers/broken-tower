@@ -66,7 +66,6 @@ io.on("connection", socket => {
   });
 
   socket.on("start-match", () => {
-    console.log("start match!!");
     let players = getPlayers();
 
     if (players.length < 2) {
@@ -93,7 +92,6 @@ io.on("connection", socket => {
   });
 
   socket.on("restart-match", () => {
-    console.log("restart match!!");
     let players = getPlayers();
 
     const { hands, total, allPieces } = dealPieces(players.length);
