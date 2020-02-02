@@ -5,20 +5,20 @@ const TowerWaiting = ({
   matchId,
   playerCount,
   onStart,
-  ip,
+  url,
   port,
   countdown
 }) => {
-  const url = `http://${ip}:${port}/player?matchId=${matchId}`;
+  const fullurl = `${url}:${port}/player?matchId=${matchId}`;
   return (
     <div>
       <div className="hero">
         <h1 className="title">
-          <a href={url}>{matchId}</a>
+          <a href={fullurl}>{matchId}</a>
         </h1>
         <p className="description">
           <QRCode
-            value={url}
+            value={fullurl}
             size={512}
             bgColor="#ffe89e"
             fgColor="#000000"

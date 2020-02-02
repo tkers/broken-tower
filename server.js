@@ -14,8 +14,8 @@ const nextHandler = nextApp.getRequestHandler();
 const addr = "0.0.0.0"; // dev ? "0.0.0.0" : "127.0.0.1";
 const port = process.env.PORT || 3000;
 
-// pass the IP to client for easy development
-const ip = getAddresses();
+// pass the IP or PUBLIC_URL to client for easy connecting
+const url = dev ? `http://${getAddresses()}` : process.env.PUBLIC_URL;
 
 // list of the active matches
 const matchList = {};
@@ -66,7 +66,7 @@ io.on("connection", socket => {
       allPieces: []
     };
     matchList[matchId] = match;
-    reply({ matchId, ip, port });
+    reply({ matchId, url, port });
   });
 
   const prepareMatch = () => {

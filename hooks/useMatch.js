@@ -7,7 +7,7 @@ const useMatch = () => {
     host: false,
     id: null
   });
-  const [address, setAddress] = useState({ ip: null, port: null });
+  const [address, setAddress] = useState({ url: null, port: null });
 
   const [playerCount, addPlayerCount] = useReducer(
     (total, delta) => total + delta,
@@ -85,7 +85,7 @@ const useMatch = () => {
   const createMatch = () => {
     socket.current.emit("create-match", data => {
       setMatch({ id: data.matchId, started: false, host: true });
-      setAddress({ ip: data.ip, port: data.port });
+      setAddress({ url: data.url, port: data.port });
     });
   };
 

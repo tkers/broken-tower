@@ -78,7 +78,7 @@ const Home = () => {
             playerCount={playerCount}
             countdown={time}
             onStart={onStart}
-            ip={address.ip}
+            url={address.url}
             port={address.port}
           />
         )
