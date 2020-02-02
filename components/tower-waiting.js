@@ -9,7 +9,9 @@ const TowerWaiting = ({
   port,
   countdown
 }) => {
-  const fullurl = `${url}:${port}/player?matchId=${matchId}`;
+  const fullurl = port
+    ? `${url}:${port}/player?matchId=${matchId}`
+    : `${url}/player?matchId=${matchId}`;
   return (
     <div>
       <div className="hero">

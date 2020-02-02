@@ -66,7 +66,7 @@ io.on("connection", socket => {
       allPieces: []
     };
     matchList[matchId] = match;
-    reply({ matchId, url, port });
+    reply({ matchId, url, port: dev ? port : undefined });
   });
 
   const prepareMatch = () => {
