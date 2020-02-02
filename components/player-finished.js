@@ -1,6 +1,7 @@
 import React from "react";
 
 import Tower from "./tower";
+import Score from "./score";
 import { getScore } from "./rating";
 
 const PlayerFinished = ({ pieces }) => {
@@ -11,6 +12,7 @@ const PlayerFinished = ({ pieces }) => {
           <p className="description">Final Score: {getScore(pieces)}</p>
         </div>
         <Tower pieces={pieces} />
+        <Score pieces={pieces} />
       </div>
       <style jsx>{`
         .wrapper {
