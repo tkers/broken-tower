@@ -147,6 +147,9 @@ io.on("connection", socket => {
     const stable = size === max;
 
     const conn = getConnection();
+    if (!conn) {
+      return;
+    }
     match.allPieces = match.allPieces.filter(p => p !== size);
     conn.pieces = conn.pieces.filter(p => p !== size);
 
