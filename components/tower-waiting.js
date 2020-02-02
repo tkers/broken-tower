@@ -24,6 +24,7 @@ const TowerWaiting = ({
             fgColor="#000000"
             includeMargin={true}
           />
+          <br />
           {countdown && (
             <span className="title">Starting in {countdown}...</span>
           )}
