@@ -12,7 +12,7 @@
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "NODE_ENV=production node server"
   },
   "dependencies": {
     "express": "^4.17.1",
