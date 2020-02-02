@@ -24,18 +24,18 @@ const dealPieces = playerNum => {
   const max = 100;
   const cut = 25;
 
-  // <cut> random numbers in range 1 to <max>
+  const perPlayer = Math.floor(cut / playerNum);
+  const total = perPlayer * playerNum; // can be a bit lower than cut
+
+  // <total> random numbers in range 1 to <max>
   const allPieces = Array.from({ length: max }, (v, k) => k + 1);
   shuffle(allPieces);
-  allPieces.splice(cut);
+  allPieces.splice(total);
 
-  const perPlayer = Math.floor(cut / playerNum);
   const hands = Array.from({ length: playerNum }, (v, k) => {
     const offset = k * perPlayer;
     return allPieces.slice(offset, offset + perPlayer);
   });
-
-  const total = perPlayer * playerNum;
 
   return { hands, total, allPieces };
 };
