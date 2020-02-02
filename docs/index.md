@@ -3,6 +3,12 @@ other. You receive a couple of unique pieces to build with, but you don't know
 which pieces every one else has. Start with the biggest chunks on the bottom,
 then smaller ones toward to top.
 
+---
+
+**Play here:** [broken-tower.herokuapp.com](https://broken-tower.herokuapp.com)
+
+---
+
 ![Player main screen](./snap.png)
 
 Made during
