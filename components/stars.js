@@ -1,7 +1,8 @@
 import React from "react";
 
 const Stars = ({ score, max = 5 }) => {
-  const n = Math.round((score * max) / 1000);
+  const ratio = Math.max((score - 500) / 500, 0);
+  const n = Math.round(ratio * max);
   const fill = "⭐️ ".repeat(n);
   const back = "⭐️ ".repeat(max - n);
   return (
