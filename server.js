@@ -11,7 +11,7 @@ const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
 
 // address and port to listen on
-const addr = dev ? "0.0.0.0" : "127.0.0.1";
+const addr = "0.0.0.0"; // dev ? "0.0.0.0" : "127.0.0.1";
 const port = 3000;
 
 // pass the IP to client for easy development
