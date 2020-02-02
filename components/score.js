@@ -6,16 +6,16 @@ const Score = ({ pieces }) => (
     <table className="score">
       <thead>
         <tr>
-          <th>Last Piece</th>
-          <th>Wrong Pieces</th>
+          <th>
+            {pieces.length > 0 ? pieces[pieces.length - 1].size : undefined}
+          </th>
+          <th>{countWrongPieces(pieces)}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            {pieces.length > 0 ? pieces[pieces.length - 1].size : undefined}
-          </td>
-          <td>{countWrongPieces(pieces)}</td>
+          <td>Last Piece</td>
+          <td>Wrong Pieces</td>
         </tr>
       </tbody>
     </table>
@@ -23,21 +23,28 @@ const Score = ({ pieces }) => (
       .container {
         position: absolute;
         bottom: 0;
-        width: 100vw;
+        width: 100%;
         right: 0;
+        padding: 4px;
+        background-color: rgba(255, 255, 255, 0.5);
+        backdrop-filter: blur(2px);
       }
       .score {
+        padding: 0;
+        width: 100%;
         border-collapse: collapse;
-        font-size: 24px;
-        margin-top: 50px;
-        color: darkOrange;
+        font-size: 16px;
+        color: #000000;
         text-align: center;
         margin: 0 auto;
       }
       .container td,
       .container th {
-        border: 1px solid #ddd;
-        padding: 8px;
+        border: 0;
+        padding: 0;
+      }
+      .container th {
+        font-size: 22px;
       }
     `}</style>
   </div>
