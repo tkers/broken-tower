@@ -12,6 +12,7 @@ const PlayerFinished = ({ pieces }) => {
         <div className="hero">
           <p className="description">
             Game Over
+            <br />
             <Stars score={getScore(pieces)} />
           </p>
         </div>

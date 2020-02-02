@@ -11,6 +11,7 @@ const TowerFinished = ({ pieces, restartMatch }) => {
       <div className="hero">
         <p className="description">
           Game Over
+          <br />
           <Stars score={getScore(pieces)} />
         </p>
         <button className="bigButton" onClick={restartMatch}>
