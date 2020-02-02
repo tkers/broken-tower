@@ -122,6 +122,7 @@ io.on("connection", socket => {
     } else {
       const conn = getConnection();
       conn.type = "player";
+      conn.pieces = [];
       broadcastAll("player-join");
       reply("ok");
     }
