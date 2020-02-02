@@ -1,4 +1,4 @@
-const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const chars = "BCDFGHJKLMNPQRSTVWXYZ23456789";
 function generateId(len) {
   let id = "";
   for (let i = 0; i < len; i++) {
