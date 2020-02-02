@@ -5,4 +5,5 @@ then smaller ones toward to top.
 
 ---
 
-Made during Global Game Jam 2020
+Made during
+[Global Game Jam 2020](https://globalgamejam.org/2020/games/broken-tower-8)
