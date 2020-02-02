@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 
+import { useRouter } from "next/router";
 import useMatch from "../hooks/useMatch";
 import useCountdown from "../hooks/useCountdown";
 
@@ -13,6 +14,7 @@ const Home = () => {
   const {
     connected,
     createMatch,
+    spectateMatch,
     startMatch,
     restartMatch,
     match,
@@ -22,21 +24,29 @@ const Home = () => {
     address
   } = useMatch();
 
+  const router = useRouter();
+
   useEffect(() => {
-    if (connected) {
+    if (!connected) {
+      return;
+    }
+
+    if (router.query.matchId) {
+      spectateMatch(router.query.matchId);
+    } else {
       createMatch();
     }
-  }, [connected]);
+  }, [connected, router.query.matchId]);
 
   const { start, stop, time } = useCountdown(() => startMatch());
 
   useEffect(() => {
-    if (playerCount >= 2) {
+    if (playerCount >= 2 && match.host) {
       start(30);
     } else {
       stop();
     }
-  }, [playerCount]);
+  }, [playerCount, match.host]);
 
   const onStart = () => {
     stop();

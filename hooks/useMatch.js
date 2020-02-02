@@ -4,6 +4,7 @@ import useSocket from "../hooks/useSocket";
 const useMatch = () => {
   const [match, setMatch] = useState({
     started: false,
+    host: false,
     id: null
   });
   const [address, setAddress] = useState({ ip: null, port: null });
@@ -80,7 +81,7 @@ const useMatch = () => {
 
   const createMatch = () => {
     socket.current.emit("create-match", data => {
-      setMatch({ id: data.matchId, started: false });
+      setMatch({ id: data.matchId, started: false, host: true });
       setAddress({ ip: data.ip, port: data.port });
     });
   };
@@ -90,7 +91,6 @@ const useMatch = () => {
   };
 
   const restartMatch = () => {
-    console.log("emit restart match");
     socket.current.emit("restart-match");
   };
 
@@ -102,20 +102,29 @@ const useMatch = () => {
     }
   };
 
-  const joinMatch = matchId => {
+  const spectateMatch = (matchId, cb) => {
     socket.current.emit("connect-match", { matchId }, data => {
       if (data.error) {
         console.log(data.error);
-        return;
+        cb && cb(false);
+      } else {
+        setMatch({
+          id: matchId,
+          started: data.started,
+          host: false
+        });
+
+        addPlayerCount(data.playerCount);
+        cb && cb(true);
       }
+    });
+  };
 
-      setMatch({
-        id: matchId,
-        started: data.started
-      });
-
-      addPlayerCount(data.playerCount);
-
+  const joinMatch = matchId => {
+    // spectate to subscribe to messages
+    // then upgrade to player by "join-match"
+    spectateMatch(matchId, ok => {
+      if (!ok) return;
       socket.current.emit("join-match", res => {
         if (res.error) {
           console.log(res.error);
@@ -131,6 +140,7 @@ const useMatch = () => {
     startMatch,
     restartMatch,
     playerCount,
+    spectateMatch,
     joinMatch,
     sendPiece,
     pieces,
