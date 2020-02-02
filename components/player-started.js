@@ -4,7 +4,7 @@ import Score from "./score";
 import Tower from "./tower";
 import { Swipeable } from "react-swipeable";
 
-const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
+const PlayerStarted = ({ pieces, remainingPieces, myPieces, sendPiece }) => {
   return (
     <Swipeable onSwipedUp={() => {}}>
       <div className="wrapper">
@@ -20,7 +20,7 @@ const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
           ) : null}
         </div>
         <Tower pieces={pieces} myPieces={myPieces} />
-        <Score pieces={pieces} />
+        <Score pieces={pieces} remainingPieces={remainingPieces} />
       </div>
       <style jsx>{`
         .wrapper {

@@ -1,21 +1,19 @@
 import React from "react";
-import { countWrongPieces } from "./rating";
+import { getScore } from "./rating";
 
-const Score = ({ pieces }) => (
+const Score = ({ pieces, remainingPieces }) => (
   <div className="container">
     <table className="score">
       <thead>
         <tr>
-          <th>
-            {pieces.length > 0 ? pieces[pieces.length - 1].size : undefined}
-          </th>
-          <th>{countWrongPieces(pieces)}</th>
+          <th>{pieces.length > 0 ? pieces[pieces.length - 1].size : "-"}</th>
+          <th>{getScore(pieces, remainingPieces)}</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>Last Piece</td>
-          <td>Wrong Pieces</td>
+          <td>Points</td>
         </tr>
       </tbody>
     </table>

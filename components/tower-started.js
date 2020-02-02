@@ -12,7 +12,7 @@ const TowerStarted = ({ remainingPieces, pieces }) => {
 
       <Tower pieces={pieces} height={800} />
 
-      <Score pieces={pieces} />
+      <Score pieces={pieces} remainingPieces={remainingPieces} />
 
       <style jsx>{`
         .hero {
