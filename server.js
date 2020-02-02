@@ -20,6 +20,26 @@ const ip = getAddresses();
 // list of the active matches
 const matchList = {};
 
+const dealPieces = playerNum => {
+  const max = 100;
+  const cut = 25;
+
+  // <cut> random numbers in range 1 to <max>
+  const allPieces = Array.from({ length: max }, (v, k) => k + 1);
+  shuffle(allPieces);
+  allPieces.splice(cut);
+
+  const perPlayer = Math.floor(cut / playerNum);
+  const hands = Array.from({ length: playerNum }, (v, k) => {
+    const offset = k * perPlayer;
+    return allPieces.slice(offset, offset + perPlayer);
+  });
+
+  const total = perPlayer * playerNum;
+
+  return { hands, total, allPieces };
+};
+
 // socket.io server
 io.on("connection", socket => {
   // keep track of the match/id the client is connected to
@@ -46,7 +66,7 @@ io.on("connection", socket => {
   });
 
   socket.on("start-match", () => {
-    console.log("start match!!")
+    console.log("start match!!");
     let players = getPlayers();
 
     if (players.length < 2) {
@@ -61,38 +81,30 @@ io.on("connection", socket => {
 
     match.started = true;
 
-    const pieces = Array.from({ length: 100 }, (v, k) => k + 1);
-    shuffle(pieces);
-    pieces.splice(25);
-    const perPlayer = Math.floor(pieces.length / players.length);
+    const { hands, total, allPieces } = dealPieces(players.length);
+
+    match.allPieces = allPieces;
 
     players.forEach((player, i) => {
-      const offset = i * perPlayer;
-      player.socket.emit("deal-pieces", {
-        pieces: pieces.slice(offset, offset + perPlayer)
-      });
+      player.socket.emit("deal-pieces", { pieces: hands[i] });
     });
 
-    broadcastAll("start", { piecesCount: players.length * perPlayer });
+    broadcastAll("start", { piecesCount: total });
   });
 
   socket.on("restart-match", () => {
-    console.log("restart match!!")
+    console.log("restart match!!");
     let players = getPlayers();
 
-    const pieces = Array.from({ length: 100 }, (v, k) => k + 1);
-    shuffle(pieces);
-    pieces.splice(25);
-    const perPlayer = Math.floor(pieces.length / players.length);
+    const { hands, total, allPieces } = dealPieces(players.length);
+
+    match.allPieces = allPieces;
 
     players.forEach((player, i) => {
-      const offset = i * perPlayer;
-      player.socket.emit("deal-pieces", {
-        pieces: pieces.slice(offset, offset + perPlayer)
-      });
+      player.socket.emit("deal-pieces", { pieces: hands[i] });
     });
 
-    broadcastAll("restart", { piecesCount: players.length * perPlayer });
+    broadcastAll("restart", { piecesCount: total });
   });
 
   socket.on("connect-match", (data, reply) => {
@@ -129,8 +141,9 @@ io.on("connection", socket => {
     }
   });
 
-  socket.on("send-piece", data => {
-    broadcastAll("send-piece", data);
+  socket.on("send-piece", size => {
+    match.allPieces = match.allPieces.filter(p => p !== size);
+    broadcastAll("send-piece", size);
   });
 });
 
