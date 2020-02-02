@@ -12,7 +12,7 @@ const nextHandler = nextApp.getRequestHandler();
 
 // address and port to listen on
 const addr = "0.0.0.0"; // dev ? "0.0.0.0" : "127.0.0.1";
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // pass the IP to client for easy development
 const ip = getAddresses();
