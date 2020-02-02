@@ -15,6 +15,7 @@ const Layout = ({ children }) => (
           Helvetica, sans-serif;
         font-size: 32px;
         color: #333333;
+        touch-action: manipulation;
       }
       a {
         color: #228877;
