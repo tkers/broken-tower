@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, Suspense } from "react";
 import { Canvas, useFrame, useThree } from "react-three-fiber";
+import Text from "./text";
 
 function Piece(props) {
   return (
@@ -10,7 +11,25 @@ function Piece(props) {
   );
 }
 
-function Lookup({ stackSize }) {
+function LastSize({ pieces, position, rotation }) {
+  const str =
+    pieces.length > 0 ? pieces[pieces.length - 1].size.toString() : "";
+
+  return (
+    <Suspense fallback={null}>
+      <Text
+        hAlign="center"
+        position={position}
+        rotation={rotation}
+        children={str}
+        size={8}
+        color="#26323d"
+      />
+    </Suspense>
+  );
+}
+
+function Lookup({ stackSize, pieces, showLastSize }) {
   const { camera } = useThree();
 
   let [angle, setAngle] = useState(0);
@@ -27,18 +46,31 @@ function Lookup({ stackSize }) {
   });
 
   return (
-    <pointLight
-      position={[camera.position.x, camera.position.y, camera.position.z]}
-      intensity={0.3}
-    />
+    <>
+      <pointLight
+        position={[camera.position.x, camera.position.y, camera.position.z]}
+        intensity={0.3}
+      />
+      {showLastSize ? (
+        <LastSize
+          pieces={pieces}
+          position={[0, pieces.length * 2.5 + 25, 0]}
+          rotation={[0, 1.6 - angle, 0]}
+        />
+      ) : null}
+    </>
   );
 }
 
-function Tower({ pieces, myPieces = [], height = 500 }) {
+function Tower({ pieces, myPieces = [], height = 500, showLastSize }) {
   return (
     <>
       <Canvas style={{ height }}>
-        <Lookup stackSize={pieces.length + myPieces.length + 20} />
+        <Lookup
+          stackSize={pieces.length + myPieces.length + 20}
+          pieces={pieces}
+          showLastSize={showLastSize}
+        />
         <ambientLight />
         <pointLight
           position={[20, (pieces.length + myPieces.length) / 2, 30]}
@@ -69,7 +101,6 @@ function Tower({ pieces, myPieces = [], height = 500 }) {
               }
             />
           ))}
-
           <Piece position={[0, -1, 0]} width={101} color={"#ab9a63"} />
         </group>
       </Canvas>

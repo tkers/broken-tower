@@ -19,7 +19,7 @@ const PlayerStarted = ({ pieces, remainingPieces, myPieces, sendPiece }) => {
             </button>
           ) : null}
         </div>
-        <Tower pieces={pieces} myPieces={myPieces} />
+        <Tower pieces={pieces} myPieces={myPieces} showLastSize={true} />
         <Score pieces={pieces} remainingPieces={remainingPieces} />
       </div>
       <style jsx>{`
