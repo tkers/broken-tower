@@ -24,8 +24,9 @@ const PlayerWaiting = ({ matchId, playerCount }) => (
       {`
         .wrapper {
           max-width: 600px;
-          margin: 50px auto 0;
-          padding: 10px;
+          margin: 20px auto 0;
+          padding: 0 10px;
+          text-align: center;
         }
       `}
     </style>

@@ -20,14 +20,14 @@ const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
           ) : null}
         </div>
         <Tower pieces={pieces} myPieces={myPieces} />
-        {pieces.length > 0 && <Score pieces={pieces} />}
+        <Score pieces={pieces} />
       </div>
       <style jsx>{`
         .wrapper {
           font-size: 18px;
           max-width: 600px;
-          margin: 0 auto 0;
-          padding: 10px;
+          margin: 20px auto 0;
+          padding: 0 10px;
           text-align: center;
         }
         .bigButton {
