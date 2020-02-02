@@ -13,11 +13,11 @@ const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
           {myPieces.length > 1 ? ", " : ""}
           {myPieces.slice(1).join(", ")}
           <br />
-          {myPieces.length && (
+          {myPieces.length > 0 ? (
             <button onClick={sendPiece} className="bigButton">
               Send Piece
             </button>
-          )}
+          ) : null}
         </div>
         <Tower pieces={pieces} myPieces={myPieces} />
         {pieces.length > 0 && <Score pieces={pieces} />}
