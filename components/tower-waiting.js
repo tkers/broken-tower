@@ -24,7 +24,9 @@ const TowerWaiting = ({
             fgColor="#000000"
             includeMargin={true}
           />
-          {countdown && <h1 className="title">Starting in {countdown}...</h1>}
+          {countdown && (
+            <span className="title">Starting in {countdown}...</span>
+          )}
         </p>
 
         <div className="row">
