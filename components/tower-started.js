@@ -10,9 +10,9 @@ const TowerStarted = ({ remainingPieces, pieces }) => {
         <p className="description">{remainingPieces} pieces remaining</p>
       </div>
 
-      <Tower pieces={pieces} />
+      <Tower pieces={pieces} height={800} />
 
-      {pieces.length > 0 && <Score pieces={pieces} />}
+      <Score pieces={pieces} />
 
       <style jsx>{`
         .hero {

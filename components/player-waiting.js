@@ -12,11 +12,11 @@ const PlayerWaiting = ({ matchId, playerCount }) => (
     />
     <div>
       {playerCount < 2 ? (
-        "Waiting for other players to join..."
+        <p>Waiting for someone to join...</p>
       ) : (
         <p>
           You and <strong>{playerCount - 1}</strong> other{" "}
-          {playerCount - 1 === 1 ? "player" : "players"} waiting to start...
+          {playerCount - 1 === 1 ? "player" : "players"} are waiting to start...
         </p>
       )}
     </div>

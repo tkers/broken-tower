@@ -34,10 +34,10 @@ function Lookup({ stackSize }) {
   );
 }
 
-function Tower({ pieces, myPieces = [] }) {
+function Tower({ pieces, myPieces = [], height = 500 }) {
   return (
     <>
-      <Canvas style={{ height: 500 }}>
+      <Canvas style={{ height }}>
         <Lookup stackSize={pieces.length + myPieces.length + 20} />
         <ambientLight />
         <pointLight
