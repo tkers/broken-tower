@@ -1,17 +1,26 @@
 import React from "react";
 
 import Tower from "./tower";
+import Score from "./score";
+import Stars from "./stars";
 import { getScore } from "./rating";
 
 const TowerFinished = ({ pieces, restartMatch }) => {
   return (
     <div>
       <div className="hero">
-        <p className="description">Final Score: {getScore(pieces)}</p>
-          <button className="bigButton" onClick={restartMatch}>Play again?</button>
+        <p className="description">
+          Game Over
+          <Stars score={getScore(pieces)} />
+        </p>
+        <button className="bigButton" onClick={restartMatch}>
+          Play again?
+        </button>
       </div>
 
       <Tower pieces={pieces} />
+
+      <Score pieces={pieces} />
 
       <style jsx>{`
         .hero {

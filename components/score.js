@@ -23,7 +23,7 @@ const Score = ({ pieces, remainingPieces }) => (
         bottom: 0;
         width: 100%;
         right: 0;
-        padding: 4px;
+        padding: 10px 4px;
         background-color: rgba(255, 255, 255, 0.5);
         backdrop-filter: blur(2px);
       }
