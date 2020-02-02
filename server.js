@@ -60,7 +60,11 @@ io.on("connection", socket => {
 
   socket.on("create-match", reply => {
     matchId = generateId(4);
-    match = { started: false, connections: [{ type: "spectator", socket }] };
+    match = {
+      started: false,
+      connections: [{ type: "spectator", socket }],
+      allPieces: []
+    };
     matchList[matchId] = match;
     reply({ matchId, ip, port });
   });
