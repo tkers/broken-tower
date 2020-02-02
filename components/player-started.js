@@ -9,7 +9,9 @@ const PlayerStarted = ({ pieces, myPieces, sendPiece }) => {
     <Swipeable onSwipedUp={() => {}}>
       <div className="wrapper">
         <div>
-          <div>My Pieces:</div> {myPieces.join(", ")}
+          <div>My Pieces:</div> <b>{myPieces[0] || ""}</b>
+          {myPieces.length > 1 ? ", " : ""}
+          {myPieces.slice(1).join(", ")}
           <br />
           {myPieces.length && (
             <button onClick={sendPiece} className="bigButton">
