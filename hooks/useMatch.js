@@ -23,17 +23,15 @@ const useMatch = () => {
   const { socket, connected } = useSocket();
 
   const onPlayerJoin = () => {
-    console.log("player joined")
     addPlayerCount(1);
   };
 
   const onPlayerLeave = () => {
-    console.log("player left")
     addPlayerCount(-1);
   };
 
   const onSendPiece = size => {
-    setPiece(pieces =>[...pieces, size]);
+    setPiece(pieces => [...pieces, size]);
     addRemainingPieces(-1);
   };
 
@@ -44,15 +42,13 @@ const useMatch = () => {
   };
 
   const onMatchStarted = data => {
-    console.log("match started")
     setMatch({ ...match, started: true });
     addRemainingPieces(data.piecesCount);
   };
 
   const onMatchRestarted = data => {
-    console.log("match re-started")
     setMatch({ ...match, started: true });
-    setPiece([])
+    setPiece([]);
     addRemainingPieces(-remainingPieces + data.piecesCount);
   };
 
@@ -94,7 +90,7 @@ const useMatch = () => {
   };
 
   const restartMatch = () => {
-    console.log("emit restart match")
+    console.log("emit restart match");
     socket.current.emit("restart-match");
   };
 
