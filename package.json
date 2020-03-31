@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "next": "9.2.1",
+    "next": "9.3.2",
     "prettier": "^1.19.1",
     "qrcode.react": "^1.0.0",
     "react": "16.12.0",
